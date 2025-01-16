@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { editProfileThunk } from "../redux/reducers/employeeProfileReducer";
+import { editProfileThunk } from "../redux/reducers/employeeProfile";
 
 const UpdateProfileForm = ({ initialData, handleClose }) => {
   console.log("INITIAL DATA", initialData);
@@ -27,7 +27,6 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(editProfileThunk(formData));
     handleClose();
   };

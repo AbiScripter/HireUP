@@ -91,7 +91,7 @@ const getEmployeeData = async (req, res) => {
 
     res.status(200).json({
       msg: "Employee data fetched Successfully",
-      user_data: employeeData,
+      employeeData: employeeData,
     });
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -153,7 +153,7 @@ const updateEmployeeProfileData = async (req, res) => {
   }
 };
 
-const postApplication = async (req, res) => {
+const jobApply = async (req, res) => {
   console.log("HIT THE SERVER", req.body);
   try {
     const employeeId = req.employee.employeeId;
@@ -257,6 +257,26 @@ const fetchFavouriteJobs = async (req, res) => {
   }
 };
 
+const fetchJobDetails = async (req, res) => {
+  try {
+    const { job_id } = req.query; // Retrieve job_id from query parameters
+    console.log("HIT BACKEND fetchJobDetails", job_id);
+
+    const jobData = await Job.findOne({ _id: job_id });
+
+    if (!jobData) {
+      return res.status(404).json({ msg: "No Job Found" });
+    }
+    res
+      .status(200)
+      .json({ msg: "Job Details Fetched Successfully", jobData: jobData });
+  } catch (error) {
+    res.status(500).json({
+      msg: "An error occurred while fetching job data",
+    });
+  }
+};
+
 module.exports = {
   registerEmployee,
   loginEmployee,
@@ -264,7 +284,8 @@ module.exports = {
   getAllJobs,
   getEmployeeProfileData,
   updateEmployeeProfileData,
-  postApplication,
+  jobApply,
   toggleFavouriteJob,
   fetchFavouriteJobs,
+  fetchJobDetails,
 };

@@ -1,22 +1,36 @@
 import { useEffect } from "react";
 import AccountMenu from "../../components/AccountMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchJobsThunk } from "../../redux/reducers/employeeReducer";
 import Loader from "../../components/Loader";
 import JobCard from "../../components/EmployeeJobCard";
-import { fetchFavouritesThunk } from "../../redux/reducers/employeeProfileReducer";
+import { fetchJobsThunk } from "../../redux/reducers/employee";
+import { fetchFavouritesThunk } from "../../redux/reducers/jobFavourite";
+
+const colors = [
+  "#FECACA", // Light Red
+  "#D1FAE5", // Light Green
+  "#BFDBFE", // Light Blue
+  "#E9D5FF", // Light Purple
+  "#FDE68A", // Light Yellow
+  "#B2F5EA", // Light Cyan
+  "#FBCFE8", // Light Pink
+  "#D1FAE5", // Light Teal
+  "#FFEDD5", // Light Peach
+  "#D7D2FF", // Light Indigo
+];
 
 const EmployeeDashBoard = () => {
   const dispatch = useDispatch();
-  const { jobs, loading, error } = useSelector((state) => state.employee);
   const {
-    loading: cardLoding,
-    error: cardError,
-    favouriteJobs,
-  } = useSelector((state) => state.employeeProfile);
+    jobs,
+    loading: jobsLoading,
+    // error: jobsFetchingError,
+  } = useSelector((state) => state.employee);
+  const { favouriteJobs } = useSelector((state) => state.jobFavourite);
 
   console.log(favouriteJobs);
 
+  //!Fetch All Jobs
   useEffect(() => {
     // Only fetch jobs if they are not already in the Redux state
     if (jobs.length === 0) {
@@ -24,32 +38,29 @@ const EmployeeDashBoard = () => {
     }
   }, [dispatch, jobs]);
 
+  //!Fetch Fav Jobs Ids
   useEffect(() => {
     dispatch(fetchFavouritesThunk());
   }, [dispatch]);
 
-  if (cardLoding) {
+  if (jobsLoading) {
     return <Loader />;
   }
 
-  if (cardError) {
-    return <p className="text-red-500">Error updateing job: {error}</p>;
-  }
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <p className="text-red-500">Error loading jobs: {error}</p>;
-  }
+  // if (jobsFetchingError) {
+  //   return (
+  //     <p className="text-red-500">
+  //       Error loading jobs: {jobsFetchingError.message}
+  //     </p>
+  //   );
+  // }
 
   return (
     <div>
       <AccountMenu />
       <div className="flex gap-4 flex-wrap bg-red-50">
         {jobs.map((job, i) => (
-          <JobCard job={job} key={job._id} />
+          <JobCard job={job} key={job._id} color={colors[i % colors.length]} />
         ))}
       </div>
     </div>

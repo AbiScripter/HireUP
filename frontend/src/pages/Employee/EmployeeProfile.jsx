@@ -5,8 +5,8 @@ import { ModalStyle } from "../Employer/EmployerDashboard";
 import UpdateProfileForm from "../../components/UpdateProfileForm";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProfileThunk } from "../../redux/reducers/employeeProfileReducer";
 import Loader from "../../components/Loader";
+import { fetchProfileThunk } from "../../redux/reducers/employeeProfile";
 
 // Component for displaying the top skills
 const SkillList = ({ skills }) => {

@@ -13,6 +13,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import { lazy } from "react";
+import JobDetails from "./pages/Employee/JobDetails";
 
 // !Lazy Loading
 const Home = lazy(() => import("./pages/Home"));
@@ -35,7 +36,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/jobs" element={<JobsPage />} /> */}
 
           {/* Employee Routes */}
           <Route path="/employee/login" element={<EmployeeLogin />} />
@@ -45,6 +45,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <EmployeeDashBoard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/employee/job/:jobId"
+            element={
+              <ProtectedRoute>
+                <JobDetails />
               </ProtectedRoute>
             }
           />

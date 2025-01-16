@@ -1,20 +1,28 @@
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavouritesThunk } from "../redux/reducers/employeeProfileReducer";
+import { useNavigate } from "react-router-dom";
+import { toggleFavouritesThunk } from "../redux/reducers/jobFavourite";
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, color }) => {
   const dispatch = useDispatch();
-  const { favouriteJobs } = useSelector((state) => state.employeeProfile);
-  console.log(favouriteJobs);
+  const navigate = useNavigate();
+  const { favouriteJobs } = useSelector((state) => state.jobFavourite);
   const isFavourite = favouriteJobs?.includes(job._id);
 
   function handleFavourites() {
     dispatch(toggleFavouritesThunk(job._id));
   }
 
+  const handleDetailsClick = () => {
+    navigate(`/employee/job/${job._id}`);
+  };
+
   return (
-    <div className="w-96 flex gap-5 flex-col p-2 bg-white border rounded-lg  capitalize">
-      <div className="rounded-md p-3 flex flex-col gap-4 relative bg-gray-200">
+    <div className="w-96 flex gap-5 flex-col p-2 bg-white border rounded-lg  capitalize ">
+      <div
+        className="rounded-md p-3 flex flex-col gap-4 relative bg-gray-200"
+        style={{ backgroundColor: color }}
+      >
         <div className=" absolute right-[1.5px] top-[2px] p-1 rounded-full cursor-pointer">
           <Heart
             size={20}
@@ -57,6 +65,7 @@ const JobCard = ({ job }) => {
         <button
           className="bg-black text-white hover:text-black hover:bg-white hover:border px-2 py-1 rounded-full text-sm font-light"
           type="button"
+          onClick={handleDetailsClick}
         >
           Details
         </button>

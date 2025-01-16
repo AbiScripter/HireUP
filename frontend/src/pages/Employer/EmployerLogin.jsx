@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginEmployerThunk } from "../../redux/reducers/employerReducer";
 import Loader from "../../components/Loader";
+import { loginEmployerThunk } from "../../redux/reducers/employer";
 
 const EmployerLogin = () => {
   const dispatch = useDispatch();

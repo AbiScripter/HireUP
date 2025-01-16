@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
-import { getJobApplicantsThunk } from "../redux/reducers/employerReducer";
+import { getJobApplicantsThunk } from "../redux/reducers/employer";
 
 const EmployerJobCard = ({ job }) => {
   const dispatch = useDispatch();
 
   function handleViewApplicants() {
-    dispatch(getJobApplicantsThunk(job._id));
+    dispatch(getJobApplicantsThunk (job._id));
   }
 
   return (

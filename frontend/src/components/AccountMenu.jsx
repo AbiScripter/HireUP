@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Avatar,
@@ -10,35 +11,21 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { LogOut, Heart, BriefcaseBusiness, UserRound } from "lucide-react";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import Loader from "./Loader";
-import { getEmployeeData } from "../services/api";
+import { getEmployeeBasicDetailsThunk } from "../redux/reducers/employeeNavbar";
 
-const AccountMenu = React.memo(() => {
+const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const open = Boolean(anchorEl);
 
-  useEffect(() => {
-    async function fetchEmployerData() {
-      try {
-        setLoading(true);
-        const fetchedEmployerData = await getEmployeeData();
-        // console.log(fetchedEmployerData);
-        // console.log(fetchedEmployerData.data.user_data);
-        setUserData(fetchedEmployerData.data.user_data);
-      } catch (error) {
-        console.log(error.message);
-        toast.error(error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const { employeeData } = useSelector((state) => state.employeeNavbar);
 
-    fetchEmployerData();
-  }, []);
+  useEffect(() => {
+    if (!employeeData) {
+      dispatch(getEmployeeBasicDetailsThunk());
+    }
+  }, [dispatch, employeeData]);
 
   // !Logout
   const handleLogout = () => {
@@ -54,10 +41,6 @@ const AccountMenu = React.memo(() => {
     setAnchorEl(null);
   };
 
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
     <div>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -71,7 +54,7 @@ const AccountMenu = React.memo(() => {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              {userData?.username.slice(0, 1).toUpperCase()}
+              {employeeData?.username.slice(0, 1).toUpperCase()}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -118,10 +101,10 @@ const AccountMenu = React.memo(() => {
           <Avatar />
           <div className="flex-grow">
             <h2 className="font-semibold text-base text-gray-800">
-              {userData?.username || "Username"}
+              {employeeData?.username || "Username"}
             </h2>
             <h2 className="text-sm text-gray-500">
-              {userData?.email || "user@example.com"}
+              {employeeData?.email || "user@example.com"}
             </h2>
           </div>
         </MenuItem>
@@ -158,6 +141,6 @@ const AccountMenu = React.memo(() => {
       </Menu>
     </div>
   );
-});
+};
 
 export default AccountMenu;
