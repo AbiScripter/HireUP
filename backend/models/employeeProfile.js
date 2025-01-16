@@ -12,7 +12,21 @@ const employeeProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employee", // reference to  employer model
     required: true,
+    unique: true,
   },
+  favouriteJobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+    },
+  ],
+  appliedJobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+      appliedAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 const EmployeeProfile = mongoose.model(

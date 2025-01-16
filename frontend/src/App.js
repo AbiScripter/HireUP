@@ -16,14 +16,18 @@ import { lazy } from "react";
 
 // !Lazy Loading
 const Home = lazy(() => import("./pages/Home"));
-const EmployeeLogin = lazy(() => import("./pages/EmployeeLogin"));
-const EmployeeSignup = lazy(() => import("./pages/EmployeeSignup"));
-const EmployeeDashBoard = lazy(() => import("./pages/EmployeeDashBoard"));
-const EmployeeProfile = lazy(() => import("./pages/EmployeeProfile"));
+const EmployeeLogin = lazy(() => import("./pages/Employee/EmployeeLogin"));
+const EmployeeSignup = lazy(() => import("./pages/Employee/EmployeeSignup"));
+const EmployeeDashBoard = lazy(() =>
+  import("./pages/Employee/EmployeeDashBoard")
+);
+const EmployeeProfile = lazy(() => import("./pages/Employee/EmployeeProfile"));
 
-const EmployerSignup = lazy(() => import("./pages/EmployerSignup"));
-const EmployerLogin = lazy(() => import("./pages/EmployerLogin"));
-const EmployerDashboard = lazy(() => import("./pages/EmployerDashboard"));
+const EmployerSignup = lazy(() => import("./pages/Employer/EmployerSignup"));
+const EmployerLogin = lazy(() => import("./pages/Employer/EmployerLogin"));
+const EmployerDashboard = lazy(() =>
+  import("./pages/Employer/EmployerDashboard")
+);
 
 function App() {
   return (

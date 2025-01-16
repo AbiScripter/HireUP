@@ -1,11 +1,15 @@
-import { Heart } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { getJobApplicantsThunk } from "../redux/reducers/employerReducer";
 
-const JobCard = ({ job }) => {
+const EmployerJobCard = ({ job }) => {
+  const dispatch = useDispatch();
+
+  function handleViewApplicants() {
+    dispatch(getJobApplicantsThunk(job._id));
+  }
+
   return (
     <div className="w-96 flex gap-5 flex-col  p-4 bg-white rounded-md relative">
-      <div className=" absolute right-2 top-1 bg-gray-100 p-1 rounded-full cursor-pointer">
-        <Heart size={20} />
-      </div>
       {/* Job header */}
       <div className="flex gap-4">
         <h2 className="capitalize border-custom-black text-custom-black rounded-full bg-red-100 w-12 h-12 flex justify-center items-center font-semibold text-lg">
@@ -46,10 +50,17 @@ const JobCard = ({ job }) => {
 
       {/* Apply button */}
       <div className="flex gap-4 text-sm">
-        <button className="bg-purple-700 text-white  px-4 py-2 rounded-md">
-          Apply Now
+        <button
+          className="bg-purple-700 text-white  px-4 py-2 rounded-md"
+          type="button"
+          onClick={handleViewApplicants}
+        >
+          View Applicants
         </button>
-        <button className="border border-black px-4 py-2 rounded-md">
+        <button
+          className="border border-black px-4 py-2 rounded-md"
+          type="button"
+        >
           View Details
         </button>
       </div>
@@ -57,4 +68,4 @@ const JobCard = ({ job }) => {
   );
 };
 
-export default JobCard;
+export default EmployerJobCard;

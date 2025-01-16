@@ -1,10 +1,10 @@
 import { Box, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
-import PostJobForm from "../components/PostJobForm";
-import { getEmployerData, getPostedJobs } from "../services/api";
+import PostJobForm from "../../components/PostJobForm";
+import { getEmployerData, getPostedJobs } from "../../services/api";
 import { toast } from "react-toastify";
-import JobCard from "../components/JobCard";
-import UserInfoCard from "../components/UserInfoCard";
+import UserInfoCard from "../../components/UserInfoCard";
+import EmployerJobCard from "../../components/EmployerJobCard";
 
 export const ModalStyle = {
   position: "absolute",
@@ -78,7 +78,7 @@ const EmployerDashboard = () => {
 
       <div>
         {jobsPostedByEmployer.map((job, i) => (
-          <JobCard key={job._id} job={job} />
+          <EmployerJobCard key={job._id} job={job} />
         ))}
       </div>
     </div>

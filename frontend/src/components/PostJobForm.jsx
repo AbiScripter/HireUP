@@ -44,9 +44,6 @@ const PostJobForm = ({ updatedLocalJobs }) => {
     });
 
     if (Object.keys(newErrors).length === 0) {
-      // No errors, submit form data
-      console.log(formData);
-      // Call your backend API here
       try {
         const response = await postJob(formData);
 

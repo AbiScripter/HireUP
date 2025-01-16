@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import { uploadResumeToSupabase } from "../services/supabaseClient";
+import { useDispatch } from "react-redux";
+import { editProfileThunk } from "../redux/reducers/employeeProfileReducer";
 
-const UpdateProfileForm = ({ initialData }) => {
+const UpdateProfileForm = ({ initialData, handleClose }) => {
+  console.log("INITIAL DATA", initialData);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     fullname: initialData?.fullname || "",
     email: initialData?.email || "",
     mobile: initialData?.mobile || "",
     yearsOfExperience: initialData?.yearsOfExperience || "",
     location: initialData?.location || "",
-    topSkills: initialData?.topSkills.join(", ") || "", // Display as comma-separated string
+    topSkills: initialData?.topSkills.join(", ") || "",
+    resumeUrl: initialData?.resumeUrl || "",
     resume: null, // For file upload
   });
 
@@ -24,20 +28,8 @@ const UpdateProfileForm = ({ initialData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let resumeUrl = null;
-    if (formData.resume) {
-      resumeUrl = await uploadResumeToSupabase(formData.resume);
-    }
-
-    const data = {
-      ...formData,
-      topSkills: formData.topSkills.split(",").map((skill) => skill.trim()),
-      resumeUrl,
-    };
-
-    console.log("Submitted Data:", data);
-
-    // Replace this with an API call to save data in your MongoDB backend
+    dispatch(editProfileThunk(formData));
+    handleClose();
   };
 
   return (
@@ -111,6 +103,22 @@ const UpdateProfileForm = ({ initialData }) => {
           variant="outlined"
           className="mb-2"
         />
+
+        <div>
+          <p className="font-medium text-lg text-gray-700">Resume:</p>
+          {initialData?.resumeUrl ? (
+            <a
+              href={initialData?.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              View Resume
+            </a>
+          ) : (
+            <p className="text-gray-500">No resume uploaded</p>
+          )}
+        </div>
 
         <div className="">
           <label className="block font-medium text-gray-700">

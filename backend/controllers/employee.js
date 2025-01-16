@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Job = require("../models/Job");
 const Employee = require("../models/employee");
 const EmployeeProfile = require("../models/employeeProfile");
+const Application = require("../models/application");
 
 const registerEmployee = async (req, res) => {
   try {
@@ -38,6 +39,25 @@ const loginEmployee = async (req, res) => {
         .json({ msg: "Unauthorized: password does not match" });
     }
 
+    // Check if EmployeeProfile exists
+    let profile = await EmployeeProfile.findOne({ employee_id: employee._id });
+
+    if (!profile) {
+      // Create a default profile if it doesn't exist
+      profile = new EmployeeProfile({
+        fullname: employee.username, // Default fullname from username
+        email: employee.email, // Email from employee record
+        mobile: "", // Default empty fields
+        yearsOfExperience: 0,
+        location: "",
+        topSkills: [],
+        resumeUrl: "",
+        employee_id: employee._id, // Associate with the employee
+      });
+
+      await profile.save();
+    }
+
     // Generate JWT token
     const token = jwt.sign(
       { employeeId: employee._id, email: employee.email }, // payload
@@ -45,10 +65,13 @@ const loginEmployee = async (req, res) => {
       { expiresIn: "1h" } // token expiry
     );
 
-    res
-      .status(200)
-      .json({ msg: "Employee logged in successfully", token: token });
+    res.status(200).json({
+      msg: "Employee logged in successfully",
+      token: token,
+      profile: profile, // Send back the profile data for use in the frontend
+    });
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ msg: error.message });
   }
 };
@@ -108,41 +131,129 @@ const getEmployeeProfileData = async (req, res) => {
   }
 };
 
-// Add employee profile data
-const addEmployeeProfileData = async (req, res) => {
+const updateEmployeeProfileData = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
-    console.log(employeeId);
-    const {
-      fullname,
-      email,
-      mobile,
-      yearsOfExperience,
-      location,
-      topSkills,
-      resumeUrl,
-    } = req.body;
 
-    const profileData = new EmployeeProfile({
-      fullname,
-      email,
-      mobile,
-      yearsOfExperience,
-      location,
-      topSkills,
-      resumeUrl,
-      employee_id: employeeId,
-    });
+    const updatedProfile = await EmployeeProfile.findOneAndUpdate(
+      { employee_id: employeeId },
+      { ...req.body, employee_id: employeeId },
+      { new: true } // This ensures the updated document is returned
+    );
 
-    await profileData.save();
+    console.log(updatedProfile);
 
     res.status(200).json({
-      msg: "Profile Data Added Successfully",
-      profile_data: profileData,
+      msg: "Profile Data updated Successfully",
+      profile_data: updatedProfile,
     });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ msg: error.message });
+  }
+};
+
+const postApplication = async (req, res) => {
+  console.log("HIT THE SERVER", req.body);
+  try {
+    const employeeId = req.employee.employeeId;
+    const profileData = await EmployeeProfile.findOne({
+      employee_id: employeeId,
+    });
+
+    const { job_id } = req.body;
+
+    const { fullname, resumeUrl } = profileData;
+
+    if (!fullname) {
+      return res.status(404).json({
+        msg: "FullName Not Provided, Please update it in Profile Page",
+      });
+    }
+
+    if (!resumeUrl) {
+      return res
+        .status(404)
+        .json({ msg: "Resume Not Provided, Please update it in Profile Page" });
+    }
+
+    const applicationData = new Application({
+      fullname: fullname,
+      resumeUrl: resumeUrl,
+      job_id: job_id,
+      employee_id: employeeId,
+    });
+
+    await applicationData.save();
+
+    res.status(200).json({
+      msg: "Job Applied Successfully",
+      application_data: applicationData,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+const toggleFavouriteJob = async (req, res) => {
+  try {
+    const employeeId = req.employee.employeeId; // Extract from authenticated request (e.g., via JWT)
+    const { job_id } = req.body;
+
+    // Find the employee profile
+    const employeeProfile = await EmployeeProfile.findOne({
+      employee_id: employeeId,
+    });
+
+    if (!employeeProfile) {
+      return res.status(404).json({ msg: "Employee profile not found" });
+    }
+
+    if (employeeProfile.favouriteJobs.includes(job_id)) {
+      // Remove the jobId from favourites
+      await EmployeeProfile.updateOne(
+        { employee_id: employeeId },
+        { $pull: { favouriteJobs: job_id } }
+      );
+      return res.status(200).json({ msg: "Job removed from favourites" });
+    } else {
+      // Add the jobId to favourites
+      await EmployeeProfile.updateOne(
+        { employee_id: employeeId },
+        { $addToSet: { favouriteJobs: job_id } }
+      );
+      return res.status(200).json({ msg: "Job added to favourites" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ msg: "An error occurred while toggling favourite job" });
+  }
+};
+
+const fetchFavouriteJobs = async (req, res) => {
+  try {
+    const employeeId = req.employee.employeeId;
+    console.log("BackenHit", employeeId);
+
+    // Using Mongoose projection to fetch only the favouriteJobs field
+    const employeeProfile = await EmployeeProfile.findOne(
+      { employee_id: employeeId },
+      "favouriteJobs" // Projection: only fetch the favouriteJobs field
+    );
+
+    if (!employeeProfile) {
+      return res.status(404).json({ msg: "Employee profile not found" });
+    }
+
+    res.status(200).json({ favouriteJobs: employeeProfile.favouriteJobs });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      msg: "An error occurred while fetching favourite jobs",
+    });
   }
 };
 
@@ -152,5 +263,8 @@ module.exports = {
   getEmployeeData,
   getAllJobs,
   getEmployeeProfileData,
-  addEmployeeProfileData,
+  updateEmployeeProfileData,
+  postApplication,
+  toggleFavouriteJob,
+  fetchFavouriteJobs,
 };

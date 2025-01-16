@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Mail, Phone, MapPin, Briefcase, Award, Loader } from "lucide-react"; // Importing icons from lucide-react
+import { Mail, Phone, MapPin, Briefcase, Award } from "lucide-react"; // Importing icons from lucide-react
 import { Box, Modal } from "@mui/material";
-import { ModalStyle } from "./EmployerDashboard";
-import UpdateProfileForm from "../components/UpdateProfileForm";
+import { ModalStyle } from "../Employer/EmployerDashboard";
+import UpdateProfileForm from "../../components/UpdateProfileForm";
 import { toast } from "react-toastify";
-import AddProfileForm from "../components/AddProfileForm";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployeeProfile } from "../redux/reducers/employeeReducer";
+import { fetchProfileThunk } from "../../redux/reducers/employeeProfileReducer";
+import Loader from "../../components/Loader";
 
 // Component for displaying the top skills
 const SkillList = ({ skills }) => {
@@ -41,17 +41,15 @@ const EmployeeProfile = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // const [employeeData, setEmployeeData] = useState(null);
   const dispatch = useDispatch();
 
-  // Access jobs and loading state from Redux
   const { profileData, loading, error } = useSelector(
-    (state) => state.employee
+    (state) => state.employeeProfile
   );
 
   useEffect(() => {
     // Dispatch the thunk to fetch jobs
-    dispatch(fetchEmployeeProfile());
+    dispatch(fetchProfileThunk());
   }, [dispatch]);
 
   if (error) {
@@ -60,37 +58,6 @@ const EmployeeProfile = () => {
 
   if (loading) {
     return <Loader />;
-  }
-
-  //if the employee not added any profile data : provide a form to add data
-  if (profileData === null) {
-    return (
-      <div className="flex flex-col gap-5 justify-center items-center h-screen">
-        <h1 className="text-2xl">
-          Your profile is empty. Please add your details.
-        </h1>
-
-        {/* AddButton */}
-        <div>
-          <button
-            onClick={handleOpen}
-            className="bg-purple-700 hover:bg-purple-800 text-white px-6 py-1 rounded-sm"
-          >
-            Add Profile
-          </button>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={ModalStyle}>
-              <AddProfileForm />
-            </Box>
-          </Modal>
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -133,7 +100,18 @@ const EmployeeProfile = () => {
 
         <div>
           <p className="font-medium text-lg text-gray-700">Resume:</p>
-          <p className="text-green-500">{profileData?.resume}</p>
+          {profileData?.resumeUrl ? (
+            <a
+              href={profileData?.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              View Resume
+            </a>
+          ) : (
+            <p className="text-gray-500">No resume uploaded</p>
+          )}
         </div>
       </div>
 
@@ -152,7 +130,10 @@ const EmployeeProfile = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={ModalStyle}>
-            <UpdateProfileForm />
+            <UpdateProfileForm
+              initialData={profileData}
+              handleClose={handleClose}
+            />
           </Box>
         </Modal>
       </div>

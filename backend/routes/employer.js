@@ -6,6 +6,7 @@ const {
   loginEmployer,
   postJob,
   getPostedJobs,
+  getJobApplicants,
 } = require("../controllers/employer");
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.post("/login-employer", loginEmployer);
 router.get("/employer-data", authMiddleware, getEmployerData);
 router.post("/post-job", authMiddleware, postJob);
 router.get("/posted-jobs", authMiddleware, getPostedJobs);
+router.get("/view-applicants", authMiddleware, getJobApplicants);
 
 module.exports = router;

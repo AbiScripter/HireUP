@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Employer = require("../models/employer");
 const Job = require("../models/Job");
+const Application = require("../models/application");
 
 const registerEmployer = async (req, res) => {
   console.log(req);
@@ -129,10 +130,22 @@ const getPostedJobs = async (req, res) => {
   }
 };
 
+const getJobApplicants = async (req, res) => {
+  try {
+    const { job_id } = req.query; // Retrieve job_id from query parameters
+
+    const applicants = await Application.find({ job_id: job_id });
+    console.log(applicants);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 module.exports = {
   registerEmployer,
   loginEmployer,
   getEmployerData,
   postJob,
   getPostedJobs,
+  getJobApplicants,
 };

@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { loginEmployer, registerEmployer } from "../../services/api";
+import {
+  getApplicants,
+  loginEmployer,
+  registerEmployer,
+} from "../../services/api";
 
 // Async Thunk for Employer Registration
 export const registerEmployerThunk = createAsyncThunk(
@@ -35,6 +39,25 @@ export const loginEmployerThunk = createAsyncThunk(
   }
 );
 
+// Async Thunk for Employee Registration
+export const getJobApplicantsThunk = createAsyncThunk(
+  "employer/view-applicants",
+  async (job_id, { rejectWithValue }) => {
+    try {
+      console.log("Data inside reduxxxx", job_id);
+      const data = { job_id: job_id };
+      console.log(data);
+      const response = await getApplicants(data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.msg || "An error occurred. Please try again."
+      );
+    }
+  }
+);
+
 const employerSlice = createSlice({
   name: "employer",
   initialState: {
@@ -54,12 +77,12 @@ const employerSlice = createSlice({
       .addCase(registerEmployerThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = action.payload.msg;
-        toast.success(action.payload.msg); // Show success toast
+        toast.success(action.payload.msg);
       })
       .addCase(registerEmployerThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error(action.payload); // Show error toast
+        toast.error(action.payload);
       })
 
       // Login
@@ -70,12 +93,12 @@ const employerSlice = createSlice({
       .addCase(loginEmployerThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = action.payload.msg;
-        toast.success(action.payload.msg); // Show success toast
+        toast.success(action.payload.msg);
       })
       .addCase(loginEmployerThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error(action.payload); // Show error toast
+        toast.error(action.payload);
       });
   },
 });

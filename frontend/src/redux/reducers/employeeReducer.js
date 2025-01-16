@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import {
   getAllJobs,
-  getEmployeeProfileData,
   loginEmployee,
+  postJobApplication,
   registerEmployee,
 } from "../../services/api";
 
@@ -56,15 +56,29 @@ export const fetchJobsThunk = createAsyncThunk(
   }
 );
 
-// Fetch employee profile data
-export const fetchEmployeeProfile = createAsyncThunk(
-  "profile/fetchProfiles",
-  async (_, { rejectWithValue }) => {
+export const postApplicationThunk = createAsyncThunk(
+  "profile/postApplication",
+  async (passedData, { rejectWithValue }) => {
     try {
-      const response = await getEmployeeProfileData();
-      return response.data.profile_data;
+      console.log("Data inside redux", passedData);
+      // Prepare the data to send
+      // const data = {
+      //   ...formData,
+      //   // topSkills: topSkills,
+      //   // resumeUrl: resumeUrl,
+      // };
+
+      const data = {
+        job_id: passedData,
+      };
+
+      const response = await postJobApplication(data);
+
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message || "Failed to fetch profile.");
+      return rejectWithValue(
+        error.response?.data?.msg || error.message || "Failed to Post Job."
+      );
     }
   }
 );
@@ -73,10 +87,9 @@ const employeeSlice = createSlice({
   name: "employee",
   initialState: {
     jobs: [],
-    profileData: null,
+
     loading: false,
     error: null,
-    successMessage: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -89,7 +102,6 @@ const employeeSlice = createSlice({
       })
       .addCase(registerEmployeeThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.successMessage = action.payload.msg;
         toast.success(action.payload.msg); // Show success toast
       })
       .addCase(registerEmployeeThunk.rejected, (state, action) => {
@@ -105,7 +117,6 @@ const employeeSlice = createSlice({
       })
       .addCase(loginEmployeeThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.successMessage = action.payload.msg;
         toast.success(action.payload.msg); // Show success toast
       })
       .addCase(loginEmployeeThunk.rejected, (state, action) => {
@@ -128,18 +139,19 @@ const employeeSlice = createSlice({
         state.error = action.payload; // Capture any error
       })
 
-      // fetch profile data
-      .addCase(fetchEmployeeProfile.pending, (state) => {
+      //Post Application
+      .addCase(postApplicationThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEmployeeProfile.fulfilled, (state, action) => {
+      .addCase(postApplicationThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileData = action.payload; // Set the fetched jobs
+        toast.success(action.payload.msg);
       })
-      .addCase(fetchEmployeeProfile.rejected, (state, action) => {
+      .addCase(postApplicationThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload; // Capture any error
+        state.error = action.payload;
+        toast.error(state.error);
       });
   },
 });

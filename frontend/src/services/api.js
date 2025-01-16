@@ -27,10 +27,13 @@ export const getEmployeeData = () => API.get("/employee-data");
 export const getAllJobs = () => API.get("/jobs");
 export const getEmployeeProfileData = () => API.get("/employee-profile-data");
 
-export const addEmployeeProfileData = (data) =>
-  API.post("/add-employee-profile-data", data);
+export const updateEmployeeProfileData = (data) =>
+  API.put("/update-employee-profile-data", data);
 
-// export const updateProfileData=>API.post('/')
+export const postJobApplication = (data) => API.post("/post-application", data);
+
+export const toggleFavouriteJob = (data) => API.post("/toggle-favourite", data);
+export const fetchFavouriteJobs = () => API.get("/get-favourites");
 
 //!Employer Auth APIs
 export const registerEmployer = (userData) =>
@@ -42,3 +45,5 @@ export const loginEmployer = (loginData) =>
 export const getEmployerData = () => API.get("/employer-data");
 export const postJob = (formData) => API.post("/post-job", formData);
 export const getPostedJobs = () => API.get("/posted-jobs");
+export const getApplicants = (data) =>
+  API.get("/view-applicants", { params: data });

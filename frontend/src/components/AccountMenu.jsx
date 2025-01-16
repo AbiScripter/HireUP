@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Avatar,
@@ -9,17 +9,13 @@ import {
   Divider,
   ListItemIcon,
 } from "@mui/material";
-import {
-  LogOut,
-  Heart,
-  BriefcaseBusiness,
-  UserRound,
-  Loader,
-} from "lucide-react";
+import { LogOut, Heart, BriefcaseBusiness, UserRound } from "lucide-react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Loader from "./Loader";
+import { getEmployeeData } from "../services/api";
 
-export default function AccountMenu({ ApiFunc }) {
+const AccountMenu = React.memo(() => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,7 +25,7 @@ export default function AccountMenu({ ApiFunc }) {
     async function fetchEmployerData() {
       try {
         setLoading(true);
-        const fetchedEmployerData = await ApiFunc();
+        const fetchedEmployerData = await getEmployeeData();
         // console.log(fetchedEmployerData);
         // console.log(fetchedEmployerData.data.user_data);
         setUserData(fetchedEmployerData.data.user_data);
@@ -162,4 +158,6 @@ export default function AccountMenu({ ApiFunc }) {
       </Menu>
     </div>
   );
-}
+});
+
+export default AccountMenu;

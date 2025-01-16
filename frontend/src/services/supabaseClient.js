@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export const uploadResumeToSupabase = async (file) => {
   const fileName = `resumes/${Date.now()}_${file.name}`;
   const { data, error } = await supabase.storage
-    .from("resumes") // Replace 'uploads' with your bucket name
+    .from("resumes") //bucket name
     .upload(fileName, file);
 
   if (error) {

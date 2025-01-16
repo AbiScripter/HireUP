@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { loginEmployeeThunk } from "../redux/reducers/employeeReducer";
+import { loginEmployeeThunk } from "../../redux/reducers/employeeReducer";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../components/Loader";
+import Loader from "../../components/Loader";
 
 const EmployeeLogin = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,6 @@ const EmployeeLogin = () => {
         window.location.href = "/employee/dashboard";
       })
       .catch((error) => {
-        // Handle error (optional)
         console.error(error);
       });
   };

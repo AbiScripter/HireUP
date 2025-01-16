@@ -5,7 +5,10 @@ const {
   getAllJobs,
   getEmployeeData,
   getEmployeeProfileData,
-  addEmployeeProfileData,
+  updateEmployeeProfileData,
+  postApplication,
+  toggleFavouriteJob,
+  fetchFavouriteJobs,
 } = require("../controllers/employee");
 const employeeAuthMiddleware = require("../middlewares/employeeAuthMiddlware");
 
@@ -23,10 +26,14 @@ router.get(
   getEmployeeProfileData
 );
 
-router.post(
-  "/add-employee-profile-data",
+router.put(
+  "/update-employee-profile-data",
   employeeAuthMiddleware,
-  addEmployeeProfileData
+  updateEmployeeProfileData
 );
+
+router.post("/post-application", employeeAuthMiddleware, postApplication);
+router.post("/toggle-favourite", employeeAuthMiddleware, toggleFavouriteJob);
+router.get("/get-favourites", employeeAuthMiddleware, fetchFavouriteJobs);
 
 module.exports = router;

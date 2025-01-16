@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerEmployerThunk } from "../redux/reducers/employerReducer";
-import Loader from "../components/Loader";
+import { registerEmployeeThunk } from "../../redux/reducers/employeeReducer";
+import Loader from "../../components/Loader";
 
-const EmployerSignup = () => {
+const EmployeeSignup = () => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.employer);
+  const { loading } = useSelector((state) => state.employee);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -20,10 +20,10 @@ const EmployerSignup = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(registerEmployerThunk(formData))
+    dispatch(registerEmployeeThunk(formData))
       .unwrap() // Wait for the thunk to resolve
       .then(() => {
         // Reset formData after success
@@ -46,7 +46,7 @@ const EmployerSignup = () => {
         className="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
       >
         <h2 className="text-center text-3xl font-bold text-purple-500 mb-8">
-          Employer Sign Up
+          Job Seeker Sign Up
         </h2>
 
         <div className="mb-6">
@@ -98,7 +98,7 @@ const EmployerSignup = () => {
           <p className="text-gray-600">
             Already have an account?{" "}
             <Link
-              to="/employer/login"
+              to="/employee/login"
               className="text-purple-500 hover:underline font-semibold"
             >
               Login
@@ -110,4 +110,4 @@ const EmployerSignup = () => {
   );
 };
 
-export default EmployerSignup;
+export default EmployeeSignup;
