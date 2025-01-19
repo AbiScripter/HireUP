@@ -8,7 +8,7 @@ export const getEmployeeBasicDetailsThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getEmployeeData();
-      console.log("employee Detailssss:", response);
+      // console.log("employee Detailssss:", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(

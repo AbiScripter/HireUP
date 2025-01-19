@@ -80,14 +80,11 @@ const loginEmployee = async (req, res) => {
 const getEmployeeData = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId; // Get the user ID from the decoded token
-    console.log(employeeId);
     const employeeData = await Employee.findOne({ _id: employeeId });
 
     if (!employeeData) {
       return res.status(404).json({ msg: "Employee Not Found" });
     }
-
-    // console.log(employerData);
 
     res.status(200).json({
       msg: "Employee data fetched Successfully",
@@ -141,8 +138,6 @@ const updateEmployeeProfileData = async (req, res) => {
       { new: true } // This ensures the updated document is returned
     );
 
-    console.log(updatedProfile);
-
     res.status(200).json({
       msg: "Profile Data updated Successfully",
       profile_data: updatedProfile,
@@ -154,7 +149,6 @@ const updateEmployeeProfileData = async (req, res) => {
 };
 
 const jobApply = async (req, res) => {
-  console.log("HIT THE SERVER", req.body);
   try {
     const employeeId = req.employee.employeeId;
     const profileData = await EmployeeProfile.findOne({
@@ -184,7 +178,14 @@ const jobApply = async (req, res) => {
       employee_id: employeeId,
     });
 
+    // saving to application model
     await applicationData.save();
+
+    //adding to applied jobs in employeeProfile Model
+    await EmployeeProfile.updateOne(
+      { employee_id: employeeId },
+      { $addToSet: { appliedJobs: job_id } }
+    );
 
     res.status(200).json({
       msg: "Job Applied Successfully",
@@ -236,7 +237,6 @@ const toggleFavouriteJob = async (req, res) => {
 const fetchFavouriteJobs = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
-    console.log("BackenHit", employeeId);
 
     // Using Mongoose projection to fetch only the favouriteJobs field
     const employeeProfile = await EmployeeProfile.findOne(
@@ -257,10 +257,32 @@ const fetchFavouriteJobs = async (req, res) => {
   }
 };
 
+const fetchAppliedJobs = async (req, res) => {
+  try {
+    const employeeId = req.employee.employeeId;
+
+    // Using Mongoose projection to fetch only the favouriteJobs field
+    const employeeProfile = await EmployeeProfile.findOne(
+      { employee_id: employeeId },
+      "appliedJobs" // Projection: only fetch the favouriteJobs field
+    );
+
+    if (!employeeProfile) {
+      return res.status(404).json({ msg: "Employee profile not found" });
+    }
+
+    res.status(200).json({ appliedJobs: employeeProfile.appliedJobs });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      msg: "An error occurred while fetching applied jobs",
+    });
+  }
+};
+
 const fetchJobDetails = async (req, res) => {
   try {
     const { job_id } = req.query; // Retrieve job_id from query parameters
-    console.log("HIT BACKEND fetchJobDetails", job_id);
 
     const jobData = await Job.findOne({ _id: job_id });
 
@@ -277,6 +299,48 @@ const fetchJobDetails = async (req, res) => {
   }
 };
 
+const fetchJobStatus = async (req, res) => {
+  const { employee_id, job_id } = req.query; // Extract the query parameters
+
+  // Validate input
+  if (!employee_id || !job_id) {
+    return res.status(400).json({ error: "employeeId and jobId are required" });
+  }
+
+  try {
+    // Find the job application by employeeId and jobId
+    const application = await Application.findOne({
+      employee_id: employee_id,
+      job_id: job_id,
+    });
+
+    if (!application) {
+      return res
+        .status(404)
+        .json({ message: "No application found for this job and employee" });
+    }
+
+    // Return the status field
+    res.json({ status: application.status });
+  } catch (error) {
+    console.error("Error fetching status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const fetchFavouriteJobDetails = async (req, res) => {
+  try {
+    const { jobIds } = req.query; // Array of job IDs
+    const jobsData = await Job.find({ _id: { $in: jobIds } }); // Fetch matching jobs
+    res.status(200).json({
+      msg: "Favourite Job Details Fetched Successfully",
+      jobsData: jobsData,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch Favourite Job Details" });
+  }
+};
+
 module.exports = {
   registerEmployee,
   loginEmployee,
@@ -287,5 +351,8 @@ module.exports = {
   jobApply,
   toggleFavouriteJob,
   fetchFavouriteJobs,
+  fetchAppliedJobs,
   fetchJobDetails,
+  fetchJobStatus,
+  fetchFavouriteJobDetails,
 };

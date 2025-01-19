@@ -25,7 +25,7 @@ const EmployeeLogin = () => {
       .unwrap() // Wait for the thunk to resolve
       .then(() => {
         // Reset formData after success
-        setFormData({ email: "", password: "" });
+        // setFormData({ email: "", password: "" });
         window.location.href = "/employee/dashboard";
       })
       .catch((error) => {

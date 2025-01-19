@@ -11,6 +11,9 @@ const {
   fetchFavouriteJobs,
   fetchJobDetails,
   jobApply,
+  fetchJobStatus,
+  fetchAppliedJobs,
+  fetchFavouriteJobDetails,
 } = require("../controllers/employee");
 const employeeAuthMiddleware = require("../middlewares/employeeAuthMiddlware");
 
@@ -37,6 +40,13 @@ router.put(
 router.post("/job-apply", employeeAuthMiddleware, jobApply);
 router.post("/toggle-favourite", employeeAuthMiddleware, toggleFavouriteJob);
 router.get("/get-favourites", employeeAuthMiddleware, fetchFavouriteJobs);
+router.get(
+  "/get-favourites-details",
+  employeeAuthMiddleware,
+  fetchFavouriteJobDetails
+);
+router.get("/get-applied", employeeAuthMiddleware, fetchAppliedJobs);
 router.get("/get-job-details", employeeAuthMiddleware, fetchJobDetails);
+router.get("/get-job-status", employeeAuthMiddleware, fetchJobStatus);
 
 module.exports = router;

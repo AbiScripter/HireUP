@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchFavouriteJobs, toggleFavouriteJob } from "../../services/api";
+import {
+  fetchFavouriteJobDetails,
+  fetchFavouriteJobs,
+  toggleFavouriteJob,
+} from "../../services/api";
 import { toast } from "react-toastify";
 
 export const fetchFavouritesThunk = createAsyncThunk(
@@ -7,7 +11,6 @@ export const fetchFavouritesThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetchFavouriteJobs();
-      console.log("Redux Response for fetch favs", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -26,9 +29,30 @@ export const toggleFavouritesThunk = createAsyncThunk(
       const data = {
         job_id,
       };
-      console.log("redux toggle", data);
       const response = await toggleFavouriteJob(data);
       return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.msg ||
+          error.message ||
+          "Failed to toggle favouriteJobs."
+      );
+    }
+  }
+);
+
+export const fetchFavouriteJobDetailsThunk = createAsyncThunk(
+  "jobFavourite/fetchDetails",
+  async (jobIds, { rejectWithValue }) => {
+    try {
+      if (!jobIds || jobIds.length === 0) {
+        // Return early if jobIds is empty or undefined
+        return { jobsData: [] }; // Return an empty response to avoid backend call
+      }
+      const data = { jobIds: jobIds };
+      const response = await fetchFavouriteJobDetails(data);
+      console.log(response);
+      return response.data; // Full job details array
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.msg ||
@@ -43,6 +67,7 @@ const jobFavouriteSlice = createSlice({
   name: "jobFavourite",
   initialState: {
     favouriteJobs: [],
+    favouriteJobDetails: [], // Full job details
     loading: false,
     error: null,
   },
@@ -88,6 +113,18 @@ const jobFavouriteSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         toast.error(state.error);
+      })
+
+      .addCase(fetchFavouriteJobDetailsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchFavouriteJobDetailsThunk.fulfilled, (state, action) => {
+        state.favouriteJobDetails = action.payload.jobsData;
+        state.loading = false;
+      })
+      .addCase(fetchFavouriteJobDetailsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

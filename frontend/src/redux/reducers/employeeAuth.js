@@ -25,6 +25,7 @@ export const loginEmployeeThunk = createAsyncThunk(
       const response = await loginEmployee(userData);
       // Saving the token in localstorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("employee_id", response.data.profile.employee_id);
 
       return response.data;
     } catch (error) {

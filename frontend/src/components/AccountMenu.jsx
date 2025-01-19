@@ -129,7 +129,7 @@ const AccountMenu = () => {
           <ListItemIcon>
             <Heart size={20} />
           </ListItemIcon>
-          Saved Jobs
+          <Link to="/employee/favourites">Saved Jobs</Link>
         </MenuItem>
 
         <MenuItem onClick={handleLogout}>

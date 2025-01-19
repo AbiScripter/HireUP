@@ -34,8 +34,21 @@ export const jobApply = (data) => API.post("/job-apply", data);
 
 export const toggleFavouriteJob = (data) => API.post("/toggle-favourite", data);
 export const fetchFavouriteJobs = () => API.get("/get-favourites");
+export const fetchAppliedJobs = () => API.get("/get-applied");
+
 export const fetchJobDetails = (data) =>
   API.get("/get-job-details", { params: data });
+
+export const fetchFavouriteJobDetails = (data) =>
+  API.get("/get-favourites-details", { params: data });
+
+export const fetchJobStatus = (data) =>
+  API.get("/get-job-status", {
+    params: {
+      employee_id: data.employee_id,
+      job_id: data.job_id,
+    },
+  });
 
 //!Employer Auth APIs
 export const registerEmployer = (userData) =>

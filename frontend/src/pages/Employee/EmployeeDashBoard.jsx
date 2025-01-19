@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import AccountMenu from "../../components/AccountMenu";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import JobCard from "../../components/EmployeeJobCard";
 import { fetchJobsThunk } from "../../redux/reducers/employee";
 import { fetchFavouritesThunk } from "../../redux/reducers/jobFavourite";
+import { getAppliedJobsThunk } from "../../redux/reducers/jobDetails";
 
 const colors = [
-  "#FECACA", // Light Red
+  "#FECACF", // Light Red
   "#D1FAE5", // Light Green
   "#BFDBFE", // Light Blue
   "#E9D5FF", // Light Purple
@@ -28,7 +28,11 @@ const EmployeeDashBoard = () => {
   } = useSelector((state) => state.employee);
   const { favouriteJobs } = useSelector((state) => state.jobFavourite);
 
-  console.log(favouriteJobs);
+  console.log("favouriteJobs from dashboard", favouriteJobs);
+  // const { favouriteJobs } = useSelector((state) => state.jobFavourite);
+  // const { appliedJobs } = useSelector((state) => state.jobDetails);
+
+  // console.log({ favs: favouriteJobs, applied: appliedJobs });
 
   //!Fetch All Jobs
   useEffect(() => {
@@ -38,9 +42,14 @@ const EmployeeDashBoard = () => {
     }
   }, [dispatch, jobs]);
 
-  //!Fetch Fav Jobs Ids
+  //!Fetch Fav Job Ids
   useEffect(() => {
     dispatch(fetchFavouritesThunk());
+  }, [dispatch]);
+
+  //!Fetch Applied Job Ids
+  useEffect(() => {
+    dispatch(getAppliedJobsThunk());
   }, [dispatch]);
 
   if (jobsLoading) {
@@ -57,7 +66,6 @@ const EmployeeDashBoard = () => {
 
   return (
     <div>
-      <AccountMenu />
       <div className="flex gap-4 flex-wrap bg-red-50">
         {jobs.map((job, i) => (
           <JobCard job={job} key={job._id} color={colors[i % colors.length]} />

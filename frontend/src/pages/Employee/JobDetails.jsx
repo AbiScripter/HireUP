@@ -1,24 +1,55 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import {
   getJobDetailsThunk,
+  getJobStatusThunk,
   jobApplyThunk,
 } from "../../redux/reducers/jobDetails";
+
+const statusColors = {
+  Applied: "#7ec8e3", // Lighter Blue
+  Shortlisted: "#ffd56b", // Lighter Yellow
+  Rejected: "#f85a5a", // Lighter Red
+  Accepted: "#81c784", // Lighter Green
+};
 
 const JobDetails = () => {
   const dispatch = useDispatch();
   const { jobId } = useParams();
-  const { loading, jobPageData: job } = useSelector(
-    (state) => state.jobDetails
-  );
 
+  //!fetch job details
   useEffect(() => {
     dispatch(getJobDetailsThunk(jobId));
   }, [dispatch, jobId]);
 
+  const {
+    loading,
+    jobPageData: job, //after fetching in useEffect we can get it using redux
+    appliedJobs,
+    currentJobStatus: status,
+  } = useSelector((state) => state.jobDetails);
+
+  console.log("applied jobs", appliedJobs);
+  console.log(job);
+
+  const employee_id = localStorage.getItem("employee_id");
+
+  const isAlreadyApplied = appliedJobs?.includes(jobId);
+
+  //!fetch job status
+
+  useEffect(() => {
+    dispatch(
+      getJobStatusThunk({
+        job_id: jobId,
+        employee_id: employee_id,
+      })
+    );
+  }, [dispatch]);
+
+  //!handle job apply
   function handleApply() {
     dispatch(jobApplyThunk(jobId));
   }
@@ -49,7 +80,7 @@ const JobDetails = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="flex flex-col gap-8 w-[90%] md:w-[70%] xl:w-[60%] bg-gray-100 p-4">
-        <div>
+        <div className="flex justify-between">
           {/* <h1 className="text-3xl font-semibold">
           {job.company_name.slice(0, 1).toUpperCase()}
         </h1> */}
@@ -62,6 +93,13 @@ const JobDetails = () => {
               {job?.location} - {job?.work_mode}
             </p>
           </div>
+
+          <h1
+            className="h-min px-2 py-1 text-white rounded-md"
+            style={{ backgroundColor: statusColors[status] }}
+          >
+            {status || ""}
+          </h1>
         </div>
 
         <div className="flex gap-4 flex-wrap">
@@ -104,10 +142,13 @@ const JobDetails = () => {
 
         <div>
           <button
-            className="bg-black text-white w-full rounded-md py-1"
+            className={`bg-black text-white w-full rounded-md py-1 ${
+              isAlreadyApplied && "cursor-not-allowed"
+            }`}
             onClick={handleApply}
+            disabled={isAlreadyApplied}
           >
-            Apply Now
+            {isAlreadyApplied ? "Already Applied" : "Apply Now"}
           </button>
         </div>
       </div>
