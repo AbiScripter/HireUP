@@ -57,7 +57,7 @@ export const fetchFavouriteJobDetailsThunk = createAsyncThunk(
       return rejectWithValue(
         error.response?.data?.msg ||
           error.message ||
-          "Failed to toggle favouriteJobs."
+          "Failed to fetch favouriteJobs."
       );
     }
   }

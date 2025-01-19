@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import {
+  fetchAppliedJobDetails,
   fetchAppliedJobs,
   fetchJobDetails,
   fetchJobStatus,
@@ -8,10 +9,9 @@ import {
 } from "../../services/api";
 
 export const getJobDetailsThunk = createAsyncThunk(
-  "employer/get-jobDetails",
+  "employee/get-jobDetails",
   async (job_id, { rejectWithValue }) => {
     try {
-      console.log("Data inside reduxxxx", job_id);
       const data = { job_id: job_id };
       console.log(data);
       const response = await fetchJobDetails(data);
@@ -26,7 +26,7 @@ export const getJobDetailsThunk = createAsyncThunk(
 );
 
 export const getAppliedJobsThunk = createAsyncThunk(
-  "employer/get-applied",
+  "employee/get-applied",
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetchAppliedJobs();
@@ -41,15 +41,16 @@ export const getAppliedJobsThunk = createAsyncThunk(
 );
 
 export const getJobStatusThunk = createAsyncThunk(
-  "employer/get-jobStatus",
+  "employee/get-jobStatus",
   async (data, { rejectWithValue }) => {
     try {
-      console.log("Data inside reduxxxx", data);
+      console.log("Status thunk Data", data);
       // const data = { job_id: job_id };
       const response = await fetchJobStatus(data);
       console.log("response Status Redux :", response);
       return response.data;
     } catch (error) {
+      console.log("status redux errror", error);
       return rejectWithValue(
         error.response?.data?.msg || "An error occurred. Please try again."
       );
@@ -61,7 +62,6 @@ export const jobApplyThunk = createAsyncThunk(
   "profile/postApplication",
   async (passedData, { rejectWithValue }) => {
     try {
-      console.log("Data inside redux", passedData);
       // Prepare the data to send
       // const data = {
       //   ...formData,
@@ -69,10 +69,8 @@ export const jobApplyThunk = createAsyncThunk(
       //   // resumeUrl: resumeUrl,
       // };
 
-      const data = {
-        job_id: passedData,
-      };
-
+      const data = passedData;
+      console.log("data for jobApply", data);
       const response = await jobApply(data);
 
       return response.data;
@@ -84,10 +82,30 @@ export const jobApplyThunk = createAsyncThunk(
   }
 );
 
+export const fetchAppliedJobsDetailsThunk = createAsyncThunk(
+  "employee/fetchAppliedJobDetails",
+  async (employee_id, { rejectWithValue }) => {
+    try {
+      console.log("data insdie fetchapplyredux", employee_id);
+      const data = { employee_id: employee_id };
+      const response = await fetchAppliedJobDetails(data);
+      console.log(response);
+      return response.data; // Full job details array
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.msg ||
+          error.message ||
+          "Failed to fetch Applied  Jobs."
+      );
+    }
+  }
+);
+
 const jobDetailsSlice = createSlice({
   name: "jobDetails",
   initialState: {
     appliedJobs: [],
+    appliedJobsDetails: [],
     jobPageData: null,
     loading: false,
     error: null,
@@ -152,12 +170,23 @@ const jobDetailsSlice = createSlice({
       .addCase(getJobStatusThunk.fulfilled, (state, action) => {
         state.currentJobStatus = action.payload.status;
         state.loading = false;
-        toast.success(action.payload.msg);
       })
       .addCase(getJobStatusThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         toast.error(state.error);
+      })
+
+      .addCase(fetchAppliedJobsDetailsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAppliedJobsDetailsThunk.fulfilled, (state, action) => {
+        state.appliedJobsDetails = action.payload.jobsData;
+        state.loading = false;
+      })
+      .addCase(fetchAppliedJobsDetailsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

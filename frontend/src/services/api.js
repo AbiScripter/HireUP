@@ -42,6 +42,9 @@ export const fetchJobDetails = (data) =>
 export const fetchFavouriteJobDetails = (data) =>
   API.get("/get-favourites-details", { params: data });
 
+export const fetchAppliedJobDetails = (data) =>
+  API.get("/get-applied-details", { params: data });
+
 export const fetchJobStatus = (data) =>
   API.get("/get-job-status", {
     params: {

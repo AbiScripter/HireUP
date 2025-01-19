@@ -155,7 +155,7 @@ const jobApply = async (req, res) => {
       employee_id: employeeId,
     });
 
-    const { job_id } = req.body;
+    const { job_id, company_name, job_title } = req.body;
 
     const { fullname, resumeUrl } = profileData;
 
@@ -174,6 +174,8 @@ const jobApply = async (req, res) => {
     const applicationData = new Application({
       fullname: fullname,
       resumeUrl: resumeUrl,
+      job_title: job_title,
+      company_name: company_name,
       job_id: job_id,
       employee_id: employeeId,
     });
@@ -315,9 +317,10 @@ const fetchJobStatus = async (req, res) => {
     });
 
     if (!application) {
-      return res
-        .status(404)
-        .json({ message: "No application found for this job and employee" });
+      return res.json({
+        status: "",
+        msg: "No application found for this job and employee",
+      });
     }
 
     // Return the status field
@@ -341,6 +344,20 @@ const fetchFavouriteJobDetails = async (req, res) => {
   }
 };
 
+const fetchAppliedJobDetails = async (req, res) => {
+  try {
+    const { employee_id } = req.query; // Array of job IDs
+
+    const jobsData = await Application.find({ employee_id: employee_id }); // Fetch matching jobs
+    res.status(200).json({
+      msg: "Applied Job Details Fetched Successfully",
+      jobsData: jobsData,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch Applied Job Details" });
+  }
+};
+
 module.exports = {
   registerEmployee,
   loginEmployee,
@@ -355,4 +372,5 @@ module.exports = {
   fetchJobDetails,
   fetchJobStatus,
   fetchFavouriteJobDetails,
+  fetchAppliedJobDetails,
 };

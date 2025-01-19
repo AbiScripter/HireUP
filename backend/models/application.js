@@ -11,6 +11,12 @@ const applicationSchema = new mongoose.Schema({
     ref: "Employee", // Reference to the employee schema
     required: true,
   },
+  job_title: {
+    type: String,
+  },
+  company_name: {
+    type: String,
+  },
   fullname: { type: String, required: true }, // Employee details
   resumeUrl: { type: String, required: true }, // Resume link
   topSkills: { type: [String], default: [] },

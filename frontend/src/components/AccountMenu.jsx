@@ -122,7 +122,7 @@ const AccountMenu = () => {
           <ListItemIcon>
             <BriefcaseBusiness size={20} />
           </ListItemIcon>
-          My Jobs
+          <Link to="/employee/applied">My Jobs</Link>
         </MenuItem>
 
         <MenuItem onClick={handleClose}>

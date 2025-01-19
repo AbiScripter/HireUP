@@ -14,6 +14,7 @@ const {
   fetchJobStatus,
   fetchAppliedJobs,
   fetchFavouriteJobDetails,
+  fetchAppliedJobDetails,
 } = require("../controllers/employee");
 const employeeAuthMiddleware = require("../middlewares/employeeAuthMiddlware");
 
@@ -47,6 +48,11 @@ router.get(
 );
 router.get("/get-applied", employeeAuthMiddleware, fetchAppliedJobs);
 router.get("/get-job-details", employeeAuthMiddleware, fetchJobDetails);
+router.get(
+  "/get-applied-details",
+  employeeAuthMiddleware,
+  fetchAppliedJobDetails
+);
 router.get("/get-job-status", employeeAuthMiddleware, fetchJobStatus);
 
 module.exports = router;

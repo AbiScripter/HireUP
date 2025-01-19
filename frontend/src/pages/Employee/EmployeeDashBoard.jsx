@@ -27,8 +27,10 @@ const EmployeeDashBoard = () => {
     // error: jobsFetchingError,
   } = useSelector((state) => state.employee);
   const { favouriteJobs } = useSelector((state) => state.jobFavourite);
+  // const { appliedJobs } = useSelector((state) => state.jobDetails);
 
   console.log("favouriteJobs from dashboard", favouriteJobs);
+  // console.log("appliedJobs from dashboard", appliedJobs);
   // const { favouriteJobs } = useSelector((state) => state.jobFavourite);
   // const { appliedJobs } = useSelector((state) => state.jobDetails);
 
@@ -48,9 +50,9 @@ const EmployeeDashBoard = () => {
   }, [dispatch]);
 
   //!Fetch Applied Job Ids
-  useEffect(() => {
-    dispatch(getAppliedJobsThunk());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAppliedJobsThunk());
+  // }, [dispatch]);
 
   if (jobsLoading) {
     return <Loader />;
