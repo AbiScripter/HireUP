@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAppliedJobsDetailsThunk } from "../../redux/reducers/jobDetails";
+import { fetchAppliedJobsDetailsThunk } from "../../redux/reducers/employee/jobDetails";
 
 const AppliedJobs = () => {
   const dispatch = useDispatch();
@@ -24,11 +24,14 @@ const AppliedJobs = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl text-center">Applied Jobs</h1>
+    <div className="h-screen bg-gray-300 px-4">
+      <h1 className="text-3xl text-center py-2">Applied Jobs</h1>
       <div className="mt-4">
         {appliedJobsDetails.map((job, i) => (
-          <div key={job._id} className="flex flex-col py-4 border-b">
+          <div
+            key={job._id}
+            className="flex flex-col py-4 border-b border-b-gray-400"
+          >
             <div className="capitalize text-xl flex gap-2 font-semibold">
               <h2>{job.job_title}</h2>
               at<h2>{job.company_name}</h2>

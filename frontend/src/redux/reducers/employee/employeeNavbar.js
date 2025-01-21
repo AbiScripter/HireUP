@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { getEmployeeData } from "../../services/api";
+import { getEmployeeData } from "../../../services/api";
 
 // Async Thunk for Employee Basic Data like email and username
 export const getEmployeeBasicDetailsThunk = createAsyncThunk(

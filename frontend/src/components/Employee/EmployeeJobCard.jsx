@@ -1,7 +1,7 @@
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toggleFavouritesThunk } from "../redux/reducers/jobFavourite";
+import { toggleFavouritesThunk } from "../../redux/reducers/employee/jobFavourite";
 
 const JobCard = ({ job, color }) => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const JobCard = ({ job, color }) => {
   };
 
   return (
-    <div className="w-96 flex gap-5 flex-col p-2 bg-white border rounded-lg  capitalize ">
+    <div className="w-96 flex gap-5 flex-col p-2 border rounded-lg bg-gray-400 capitalize">
       <div
         className="rounded-md p-3 flex flex-col gap-4 relative bg-gray-200"
         style={{ backgroundColor: color }}
@@ -37,7 +37,7 @@ const JobCard = ({ job, color }) => {
           <div className="flex gap-3 justify-between items-start min-h-24">
             <h1 className="font-bold text-2xl capitalize ">{job.title}</h1>
 
-            <h2 className="capitalize rounded-full bg-red-100 w-10 h-10 flex justify-center items-center font-semibold text-lg">
+            <h2 className="capitalize rounded-full bg-gray-400 text-gray-200 min-w-10 min-h-10 flex justify-center items-center font-semibold text-lg">
               <span>{job.company_name.slice(0, 1)}</span>
             </h2>
             {/* Add company logo afterwards */}

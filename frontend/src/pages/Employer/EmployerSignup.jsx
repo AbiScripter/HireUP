@@ -3,11 +3,11 @@ import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-import { registerEmployerThunk } from "../../redux/reducers/employer";
+import { registerEmployerThunk } from "../../redux/reducers/employer/employerAuth";
 
 const EmployerSignup = () => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.employer);
+  const { loading } = useSelector((state) => state.employerAuth);
 
   const [formData, setFormData] = useState({
     username: "",

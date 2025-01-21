@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import {
   getEmployeeProfileData,
   updateEmployeeProfileData,
-} from "../../services/api";
-import { uploadResumeToSupabase } from "../../services/supabaseClient";
+} from "../../../services/api";
+import { uploadResumeToSupabase } from "../../../services/supabaseClient";
 
 // Fetch employee profile data
 export const fetchProfileThunk = createAsyncThunk(

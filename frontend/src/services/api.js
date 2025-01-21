@@ -65,3 +65,8 @@ export const postJob = (formData) => API.post("/post-job", formData);
 export const getPostedJobs = () => API.get("/posted-jobs");
 export const getApplicants = (data) =>
   API.get("/view-applicants", { params: data });
+export const getJobDetails = (data) =>
+  API.get("/employer-get-job-details", { params: data });
+
+export const updateJobStatus = (data) =>
+  API.put("/update-job-status", { params: data });

@@ -6,7 +6,7 @@ import {
   fetchJobDetails,
   fetchJobStatus,
   jobApply,
-} from "../../services/api";
+} from "../../../services/api";
 
 export const getJobDetailsThunk = createAsyncThunk(
   "employee/get-jobDetails",

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-import { loginEmployerThunk } from "../../redux/reducers/employer";
+import { loginEmployerThunk } from "../../redux/reducers/employer/employerAuth";
 
 const EmployerLogin = () => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.employee);
+  const { loading } = useSelector((state) => state.employerAuth);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -20,7 +20,7 @@ const EmployerLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("formdata in login component", formData);
     dispatch(loginEmployerThunk(formData))
       .unwrap() // Wait for the thunk to resolve
       .then(() => {

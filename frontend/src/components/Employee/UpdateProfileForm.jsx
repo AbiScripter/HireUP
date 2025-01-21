@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { editProfileThunk } from "../redux/reducers/employeeProfile";
+import { editProfileThunk } from "../../redux/reducers/employee/employeeProfile";
 
 const UpdateProfileForm = ({ initialData, handleClose }) => {
   console.log("INITIAL DATA", initialData);
@@ -103,14 +103,14 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
           className="mb-2"
         />
 
-        <div>
-          <p className="font-medium text-lg text-gray-700">Resume:</p>
+        <div className="flex items-center gap-2">
+          <p className="font-medium text-lg text-gray-700">Resume : </p>
           {initialData?.resumeUrl ? (
             <a
               href={initialData?.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 underline"
+              className="text-indigo-600 underline"
             >
               View Resume
             </a>
@@ -121,7 +121,7 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
 
         <div className="">
           <label className="block font-medium text-gray-700">
-            Upload Resume
+            Upload New Resume
           </label>
           <input
             type="file"
@@ -132,13 +132,13 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
         </div>
       </Box>
 
-      <Button
+      <button
         type="submit"
         variant="contained"
-        className="mt-6 bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg"
+        className="mt-6 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md w-full"
       >
         Update Profile
-      </Button>
+      </button>
     </Box>
   );
 };

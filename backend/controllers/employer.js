@@ -25,7 +25,9 @@ const registerEmployer = async (req, res) => {
 const loginEmployer = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("email and password backend", email, password);
     const employer = await Employer.findOne({ email });
+    console.log(employer);
 
     if (!employer) {
       return res.status(404).json({ msg: "Employer Not Found" });
@@ -130,14 +132,68 @@ const getPostedJobs = async (req, res) => {
   }
 };
 
+const fetchJobDetails = async (req, res) => {
+  try {
+    const { job_id } = req.query; // Retrieve job_id from query parameters
+
+    const jobData = await Job.findOne({ _id: job_id });
+
+    if (!jobData) {
+      return res.status(404).json({ msg: "No Job Found" });
+    }
+    res
+      .status(200)
+      .json({ msg: "Job Details Fetched Successfully", jobData: jobData });
+  } catch (error) {
+    res.status(500).json({
+      msg: "An error occurred while fetching job data",
+    });
+  }
+};
+
 const getJobApplicants = async (req, res) => {
   try {
     const { job_id } = req.query; // Retrieve job_id from query parameters
 
     const applicants = await Application.find({ job_id: job_id });
-    console.log(applicants);
+
+    if (!applicants) {
+      res
+        .status(200)
+        .json({ msg: "No Applicants for this job", applicants: [] });
+    }
+
+    res
+      .status(200)
+      .json({ msg: "Applicants for this job fetched", applicants: applicants });
   } catch (error) {
     res.status(500).json({ msg: error.message });
+  }
+};
+
+const updateJobStatus = async (req, res) => {
+  try {
+    const { job_id, employee_id, status } = req.body.params; // Extract data from the request body
+
+    if (!job_id || !employee_id || !status) {
+      return res.status(400).json({ msg: "Missing required fields" });
+    }
+
+    // Find the document by job_id and employee_id and update the status
+    const result = await Application.updateOne(
+      { job_id, employee_id }, // Query to find the document
+      { $set: { status } } // Update the status field
+    );
+
+    // Check if the document was updated
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ msg: "Application not found" });
+    }
+
+    res.status(200).json({ msg: "Job status updated successfully", result });
+  } catch (error) {
+    console.error("Error updating job status:", error);
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -148,4 +204,6 @@ module.exports = {
   postJob,
   getPostedJobs,
   getJobApplicants,
+  fetchJobDetails,
+  updateJobStatus,
 };

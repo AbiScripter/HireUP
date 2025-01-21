@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginEmployee, registerEmployee } from "../../services/api";
+import { loginEmployee, registerEmployee } from "../../../services/api";
 import { toast } from "react-toastify";
 
 // Async Thunk for Employee Registration

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchFavouriteJobDetailsThunk,
   fetchFavouritesThunk,
-} from "../../redux/reducers/jobFavourite";
-import JobCard from "../../components/EmployeeJobCard";
+} from "../../redux/reducers/employee/jobFavourite";
+import JobCard from "../../components/Employee/EmployeeJobCard";
 
 const FavouriteJobs = () => {
   const dispatch = useDispatch();
@@ -29,14 +29,14 @@ const FavouriteJobs = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>Favourite Jobs</h1>
-      <div>
+    <main className="h-screen bg-gray-300 px-4">
+      <h1 className="text-4xl text-center py-6">Favourite Jobs</h1>
+      <div className="flex gap-4 flex-wrap py-6">
         {favouriteJobDetails.map((job, i) => (
           <JobCard key={i} job={job} />
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 

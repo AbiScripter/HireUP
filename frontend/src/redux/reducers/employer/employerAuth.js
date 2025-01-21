@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import {
-  getApplicants,
-  loginEmployer,
-  registerEmployer,
-} from "../../services/api";
+import { loginEmployer, registerEmployer } from "../../../services/api";
 
 // Async Thunk for Employer Registration
 export const registerEmployerThunk = createAsyncThunk(
@@ -21,10 +17,12 @@ export const registerEmployerThunk = createAsyncThunk(
   }
 );
 
-// Async Thunk for Employee Registration
+// Async Thunk for Employe Registration
 export const loginEmployerThunk = createAsyncThunk(
   "employer/login",
   async (userData, { rejectWithValue }) => {
+    console.log("userdata of login redux", userData);
+
     try {
       const response = await loginEmployer(userData);
       // Saving the token in localstorage
@@ -39,27 +37,8 @@ export const loginEmployerThunk = createAsyncThunk(
   }
 );
 
-// Async Thunk for Employee Registration
-export const getJobApplicantsThunk = createAsyncThunk(
-  "employer/view-applicants",
-  async (job_id, { rejectWithValue }) => {
-    try {
-      console.log("Data inside reduxxxx", job_id);
-      const data = { job_id: job_id };
-      console.log(data);
-      const response = await getApplicants(data);
-
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.msg || "An error occurred. Please try again."
-      );
-    }
-  }
-);
-
 const employerSlice = createSlice({
-  name: "employer",
+  name: "employerAuth",
   initialState: {
     loading: false,
     error: null,

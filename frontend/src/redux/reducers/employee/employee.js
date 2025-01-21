@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllJobs } from "../../services/api";
+import { getAllJobs } from "../../../services/api";
 import { toast } from "react-toastify";
 
 // Fetch all jobs for the employees

@@ -7,7 +7,7 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import { postJob } from "../services/api";
+import { postJob } from "../../services/api";
 import { toast } from "react-toastify";
 
 const PostJobForm = ({ updatedLocalJobs }) => {
@@ -62,7 +62,7 @@ const PostJobForm = ({ updatedLocalJobs }) => {
 
   return (
     <form
-      className="w-full max-w-lg mx-auto p-6 bg-white shadow-md rounded"
+      className="w-full max-w-lg mx-auto p-6 bg-white shadow-md"
       onSubmit={handleSubmit}
     >
       <h2 className="text-2xl font-semibold mb-4">Post Job</h2>

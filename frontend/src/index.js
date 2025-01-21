@@ -11,7 +11,7 @@ import store from "./redux/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={customTheme}>
-    <ToastContainer autoClose={2000} />
+    <ToastContainer autoClose={1000} />
     <CssBaseline />
     <Provider store={store}>
       <App />

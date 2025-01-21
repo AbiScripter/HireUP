@@ -16,7 +16,7 @@ const Home = () => {
               Your Next Career Starts Here
             </h1>
             <h3 className="text-4xl text-center">
-              Find Jobs. Unlock Opportunities.
+              Find Jobs. Unlock Opportunities
             </h3>
           </div>
           <div className="flex gap-10 font-semibold text-white">

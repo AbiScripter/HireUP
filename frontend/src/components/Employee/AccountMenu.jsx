@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { LogOut, Heart, BriefcaseBusiness, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getEmployeeBasicDetailsThunk } from "../redux/reducers/employeeNavbar";
+import { getEmployeeBasicDetailsThunk } from "../../redux/reducers/employee/employeeNavbar";
 
 const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,7 +53,7 @@ const AccountMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>
+            <Avatar sx={{ width: 36, height: 36, bgcolor: "#A855F7" }}>
               {employeeData?.username.slice(0, 1).toUpperCase()}
             </Avatar>
           </IconButton>
@@ -91,6 +91,9 @@ const AccountMenu = () => {
                 transform: "translateY(-50%) rotate(45deg)",
                 zIndex: 0,
               },
+              "& .MuiMenuItem-gutters:hover ": {
+                bgcolor: "lightgray",
+              },
             },
           },
         }}
@@ -100,7 +103,7 @@ const AccountMenu = () => {
         <MenuItem>
           <Avatar />
           <div className="flex-grow">
-            <h2 className="font-semibold text-base text-gray-800">
+            <h2 className="font-semibold text-base text-gray-800 capitalize">
               {employeeData?.username || "Username"}
             </h2>
             <h2 className="text-sm text-gray-500">
@@ -132,9 +135,9 @@ const AccountMenu = () => {
           <Link to="/employee/favourites">Saved Jobs</Link>
         </MenuItem>
 
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={handleLogout} style={{ color: "red" }}>
           <ListItemIcon>
-            <LogOut size={20} />
+            <LogOut size={20} color="red" />
           </ListItemIcon>
           Logout
         </MenuItem>

@@ -3,7 +3,7 @@ import {
   fetchFavouriteJobDetails,
   fetchFavouriteJobs,
   toggleFavouriteJob,
-} from "../../services/api";
+} from "../../../services/api";
 import { toast } from "react-toastify";
 
 export const fetchFavouritesThunk = createAsyncThunk(

@@ -3,7 +3,7 @@ import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-import { loginEmployeeThunk } from "../../redux/reducers/employeeAuth";
+import { loginEmployeeThunk } from "../../redux/reducers/employee/employeeAuth";
 
 const EmployeeLogin = () => {
   const dispatch = useDispatch();

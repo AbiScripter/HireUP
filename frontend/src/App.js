@@ -16,6 +16,8 @@ import { lazy } from "react";
 import EmployeeLayout from "./Layout/EmployeeLayout";
 import FavouriteJobs from "./pages/Employee/FavouriteJobs";
 import AppliedJobs from "./pages/Employee/AppliedJobs";
+import EmployerJobDetails from "./pages/Employer/JobDetails";
+import EmployerLayout from "./Layout/EmployerLayout";
 
 // !Lazy Loading
 const Home = lazy(() => import("./pages/Home"));
@@ -89,14 +91,25 @@ function App() {
           {/* Employer Routes */}
           <Route path="/employer/login" element={<EmployerLogin />} />
           <Route path="/employer/signup" element={<EmployerSignup />} />
-          <Route
-            path="/employer/dashboard"
-            element={
-              <ProtectedRoute>
-                <EmployerDashboard />
-              </ProtectedRoute>
-            }
-          />
+
+          <Route element={<EmployerLayout />}>
+            <Route
+              path="/employer/dashboard"
+              element={
+                <ProtectedRoute>
+                  <EmployerDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/employer/job/:jobId"
+              element={
+                <ProtectedRoute>
+                  <EmployerJobDetails />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

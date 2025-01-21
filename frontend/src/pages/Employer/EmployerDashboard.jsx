@@ -1,10 +1,11 @@
 import { Box, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
-import PostJobForm from "../../components/PostJobForm";
-import { getEmployerData, getPostedJobs } from "../../services/api";
 import { toast } from "react-toastify";
-import UserInfoCard from "../../components/UserInfoCard";
-import EmployerJobCard from "../../components/EmployerJobCard";
+import PostJobForm from "../../components/Employer/PostJobForm";
+import { getEmployerData, getPostedJobs } from "../../services/api";
+import UserInfoCard from "../../components/Employer/UserInfoCard";
+import EmployerJobCard from "../../components/Employer/EmployerJobCard";
+import Navbar from "../../components/Employer/Navbar";
 
 export const ModalStyle = {
   position: "absolute",
@@ -13,7 +14,6 @@ export const ModalStyle = {
   transform: "translate(-50%, -50%)",
   width: 600,
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -55,33 +55,38 @@ const EmployerDashboard = () => {
   console.log(jobsPostedByEmployer);
 
   return (
-    <div className="bg-gray-700 h-screen">
-      <UserInfoCard ApiFunc={getEmployerData} />
-      <div>
-        <button
-          onClick={handleOpen}
-          className="bg-purple-700 hover:bg-purple-800 text-white px-6 py-1 rounded-sm"
-        >
-          Post Job
-        </button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={ModalStyle}>
-            <PostJobForm updatedLocalJobs={updatedLocalJobs} />
-          </Box>
-        </Modal>
-      </div>
+    <>
+      <main>
+        {/* Open Post Job Form */}
+        <div className="flex justify-center py-4 px-4">
+          <button
+            onClick={handleOpen}
+            className="bg-purple-700 hover:bg-purple-800 text-white py-2 w-[99%] rounded-sm fixed bottom-2 text-xl"
+          >
+            Post Job
+          </button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={ModalStyle}>
+              <PostJobForm updatedLocalJobs={updatedLocalJobs} />
+            </Box>
+          </Modal>
+        </div>
 
-      <div>
-        {jobsPostedByEmployer.map((job, i) => (
-          <EmployerJobCard key={job._id} job={job} />
-        ))}
-      </div>
-    </div>
+        <div className="">
+          <h1 className="text-4xl text-center">Your Job Postings</h1>
+          <div className="p-6">
+            {jobsPostedByEmployer.map((job, i) => (
+              <EmployerJobCard key={i} job={job} />
+            ))}
+          </div>
+        </div>
+      </main>
+    </>
   );
 };
 
