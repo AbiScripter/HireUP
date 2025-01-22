@@ -6,6 +6,8 @@ import Loader from "../../components/Loader";
 import { registerEmployerThunk } from "../../redux/reducers/employer/employerAuth";
 import AppLogo from "../../components/AppLogo";
 import PasswordEye from "../../components/PasswordEye";
+import selectTeamSvg from "../../assets/svgs/undraw_selecting-team_zehd.svg";
+import AuthRightHalf from "../../components/AuthRightHalf";
 
 const EmployerSignup = () => {
   const dispatch = useDispatch();
@@ -40,68 +42,72 @@ const EmployerSignup = () => {
   }
 
   return (
-    <main className="bg-gray-300 h-screen">
-      <div className="flex justify-center pt-4">
-        <Link to="/">
-          <AppLogo />
-        </Link>
-      </div>
-      <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end">
-        <p>Build your dream team with us.</p>
-      </h1>
-      <div className="flex flex-col justify-center items-center mt-14">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
-        >
-          <div className="mb-6">
-            <TextField
-              label="Username"
-              variant="outlined"
-              fullWidth
-              name="username"
-              inputRef={usernameRef}
-              className="mb-6"
-            />
-          </div>
-
-          <div className="mb-6">
-            <TextField
-              label="Email"
-              variant="outlined"
-              fullWidth
-              name="email"
-              inputRef={emailRef}
-              className="mb-6"
-            />
-          </div>
-
-          <div className="mb-6">
-            <PasswordEye passwordRef={passwordRef} />
-          </div>
-
-          <Button
-            type="submit"
-            variant="contained"
-            className="w-full py-3 text-lg"
+    <div className="grid grid-cols-2">
+      <main className="bg-gray-300 h-screen">
+        <div className="flex justify-center pt-4">
+          <Link to="/">
+            <AppLogo />
+          </Link>
+        </div>
+        <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end">
+          <p>Build your dream team with us.</p>
+        </h1>
+        <div className="flex flex-col justify-center items-center mt-14">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
           >
-            Sign Up
-          </Button>
+            <div className="mb-6">
+              <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                name="username"
+                inputRef={usernameRef}
+                className="mb-6"
+              />
+            </div>
 
-          <div className="text-center mt-6">
-            <p className="text-gray-600">
-              Already have an account?{" "}
-              <Link
-                to="/employer/login"
-                className="text-purple-500 hover:underline font-semibold"
-              >
-                Login
-              </Link>
-            </p>
-          </div>
-        </form>
-      </div>
-    </main>
+            <div className="mb-6">
+              <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                name="email"
+                inputRef={emailRef}
+                className="mb-6"
+              />
+            </div>
+
+            <div className="mb-6">
+              <PasswordEye passwordRef={passwordRef} />
+            </div>
+
+            <Button
+              type="submit"
+              variant="contained"
+              className="w-full py-3 text-lg"
+            >
+              Sign Up
+            </Button>
+
+            <div className="text-center mt-6">
+              <p className="text-gray-600">
+                Already have an account?{" "}
+                <Link
+                  to="/employer/login"
+                  className="text-purple-500 hover:underline font-semibold"
+                >
+                  Login
+                </Link>
+              </p>
+            </div>
+          </form>
+        </div>
+      </main>
+
+      <AuthRightHalf authSvg={selectTeamSvg} type={"employer"} />
+    </div>
   );
 };
 
