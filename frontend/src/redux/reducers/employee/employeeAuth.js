@@ -68,7 +68,7 @@ const employeeAuthSlice = createSlice({
       })
       .addCase(loginEmployeeThunk.fulfilled, (state, action) => {
         state.loading = false;
-        toast.success(action.payload.msg); // Show success toast
+        // toast.success(action.payload.msg); // Show success toast
       })
       .addCase(loginEmployeeThunk.rejected, (state, action) => {
         state.loading = false;
