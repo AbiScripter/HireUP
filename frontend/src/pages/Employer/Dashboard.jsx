@@ -2,10 +2,8 @@ import { Box, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import PostJobForm from "../../components/Employer/PostJobForm";
-import { getEmployerData, getPostedJobs } from "../../services/api";
-import UserInfoCard from "../../components/Employer/UserInfoCard";
-import EmployerJobCard from "../../components/Employer/EmployerJobCard";
-import Navbar from "../../components/Employer/Navbar";
+import { getPostedJobs } from "../../services/api";
+import EmployerJobCard from "../../components/Employer/JobCard";
 
 export const ModalStyle = {
   position: "absolute",

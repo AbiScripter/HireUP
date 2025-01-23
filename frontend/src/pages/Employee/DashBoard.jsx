@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-import JobCard from "../../components/Employee/EmployeeJobCard";
+import JobCard from "../../components/Employee/JobCard";
 import { fetchJobsThunk } from "../../redux/reducers/employee/employee";
 import { fetchFavouritesThunk } from "../../redux/reducers/employee/jobFavourite";
 
@@ -66,8 +66,8 @@ const EmployeeDashBoard = () => {
   // }
 
   return (
-    <main className="h-screen px-4 bg-gray-300">
-      <h1 className="text-4xl text-center py-6">Jobs</h1>
+    <main className="h-screen px-4">
+      {/* <h1 className="text-4xl text-center py-6">Jobs</h1> */}
       <div className="flex gap-4 flex-wrap py-6">
         {jobs.map((job, i) => (
           <JobCard job={job} key={job._id} color={colors[i % colors.length]} />

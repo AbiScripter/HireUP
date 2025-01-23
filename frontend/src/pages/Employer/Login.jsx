@@ -1,17 +1,16 @@
 import { useRef } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-import { registerEmployerThunk } from "../../redux/reducers/employer/employerAuth";
+import { loginEmployerThunk } from "../../redux/reducers/employer/employerAuth";
 import AppLogo from "../../components/AppLogo";
 import PasswordEye from "../../components/PasswordEye";
-import selectTeamSvg from "../../assets/svgs/undraw_selecting-team_zehd.svg";
+import searchPeopleSvg from "../../assets/svgs/undraw_people-search_xpq4.svg";
 import AuthRightHalf from "../../components/AuthRightHalf";
 
-const EmployerSignup = () => {
+const EmployerLogin = () => {
   const dispatch = useDispatch();
-  const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const { loading } = useSelector((state) => state.employerAuth);
@@ -20,16 +19,17 @@ const EmployerSignup = () => {
     e.preventDefault();
 
     const formData = {
-      username: usernameRef.current.value,
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
 
-    dispatch(registerEmployerThunk(formData))
+    console.log("formdata in login component", formData);
+    dispatch(loginEmployerThunk(formData))
       .unwrap() // Wait for the thunk to resolve
       .then(() => {
         // Reset formData after success
-        // setFormData({ username: "", email: "", password: "" });
+        // setFormData({ email: "", password: "" });
+        window.location.href = "/employer/dashboard";
       })
       .catch((error) => {
         // Handle error (optional)
@@ -50,7 +50,8 @@ const EmployerSignup = () => {
           </Link>
         </div>
         <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end">
-          <p>Build your dream team with us.</p>
+          <p>Welcome back!</p>
+          <p>Find the talent you need.</p>
         </h1>
         <div className="flex flex-col justify-center items-center mt-14">
           <form
@@ -59,56 +60,40 @@ const EmployerSignup = () => {
           >
             <div className="mb-6">
               <TextField
-                label="Username"
-                variant="outlined"
-                fullWidth
-                name="username"
-                inputRef={usernameRef}
-                className="mb-6"
-              />
-            </div>
-
-            <div className="mb-6">
-              <TextField
                 label="Email"
                 variant="outlined"
                 fullWidth
                 name="email"
                 inputRef={emailRef}
-                className="mb-6"
               />
             </div>
 
-            <div className="mb-6">
-              <PasswordEye passwordRef={passwordRef} />
-            </div>
+            <PasswordEye passwordRef={passwordRef} />
 
-            <Button
+            <button
               type="submit"
-              variant="contained"
-              className="w-full py-3 text-lg"
+              className="w-full py-1 text-gray-100 bg-primary hover:bg-primaryhover text-lg rounded-sm"
             >
-              Sign Up
-            </Button>
+              Login
+            </button>
 
             <div className="text-center mt-6">
               <p className="text-gray-600">
-                Already have an account?{" "}
+                Don't have an account?{" "}
                 <Link
-                  to="/employer/login"
-                  className="text-purple-500 hover:underline font-semibold"
+                  to="/employer/signup"
+                  className="text-primary hover:underline font-semibold"
                 >
-                  Login
+                  Sign Up
                 </Link>
               </p>
             </div>
           </form>
         </div>
       </main>
-
-      <AuthRightHalf authSvg={selectTeamSvg} type={"employer"} />
+      <AuthRightHalf authSvg={searchPeopleSvg} type={"employer"} />
     </div>
   );
 };
 
-export default EmployerSignup;
+export default EmployerLogin;

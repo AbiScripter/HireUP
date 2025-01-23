@@ -3,14 +3,15 @@ import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-import { loginEmployerThunk } from "../../redux/reducers/employer/employerAuth";
+import { registerEmployerThunk } from "../../redux/reducers/employer/employerAuth";
 import AppLogo from "../../components/AppLogo";
 import PasswordEye from "../../components/PasswordEye";
-import searchPeopleSvg from "../../assets/svgs/undraw_people-search_xpq4.svg";
+import selectTeamSvg from "../../assets/svgs/undraw_selecting-team_zehd.svg";
 import AuthRightHalf from "../../components/AuthRightHalf";
 
-const EmployerLogin = () => {
+const EmployerSignup = () => {
   const dispatch = useDispatch();
+  const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const { loading } = useSelector((state) => state.employerAuth);
@@ -19,17 +20,16 @@ const EmployerLogin = () => {
     e.preventDefault();
 
     const formData = {
+      username: usernameRef.current.value,
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
 
-    console.log("formdata in login component", formData);
-    dispatch(loginEmployerThunk(formData))
+    dispatch(registerEmployerThunk(formData))
       .unwrap() // Wait for the thunk to resolve
       .then(() => {
         // Reset formData after success
-        // setFormData({ email: "", password: "" });
-        window.location.href = "/employer/dashboard";
+        // setFormData({ username: "", email: "", password: "" });
       })
       .catch((error) => {
         // Handle error (optional)
@@ -50,8 +50,7 @@ const EmployerLogin = () => {
           </Link>
         </div>
         <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end">
-          <p>Welcome back!</p>
-          <p>Find the talent you need.</p>
+          <p>Build your dream team with us.</p>
         </h1>
         <div className="flex flex-col justify-center items-center mt-14">
           <form
@@ -60,41 +59,53 @@ const EmployerLogin = () => {
           >
             <div className="mb-6">
               <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                name="username"
+                inputRef={usernameRef}
+                className="mb-6"
+              />
+            </div>
+
+            <div className="mb-6">
+              <TextField
                 label="Email"
                 variant="outlined"
                 fullWidth
                 name="email"
                 inputRef={emailRef}
+                className="mb-6"
               />
             </div>
-            <div className="mb-6">
-              <PasswordEye passwordRef={passwordRef} />
-            </div>
-            <Button
+
+            <PasswordEye passwordRef={passwordRef} />
+
+            <button
               type="submit"
-              variant="contained"
-              className="w-full py-3 text-lg"
+              className="w-full py-1 text-gray-100 bg-primary hover:bg-primaryhover text-lg rounded-sm"
             >
-              Login
-            </Button>
+              Sign Up
+            </button>
 
             <div className="text-center mt-6">
               <p className="text-gray-600">
-                Don't have an account?{" "}
+                Already have an account?{" "}
                 <Link
-                  to="/employer/signup"
-                  className="text-purple-500 hover:underline font-semibold"
+                  to="/employer/login"
+                  className="text-primary hover:underline font-semibold"
                 >
-                  Sign Up
+                  Login
                 </Link>
               </p>
             </div>
           </form>
         </div>
       </main>
-      <AuthRightHalf authSvg={searchPeopleSvg} type={"employer"} />
+
+      <AuthRightHalf authSvg={selectTeamSvg} type={"employer"} />
     </div>
   );
 };
 
-export default EmployerLogin;
+export default EmployerSignup;

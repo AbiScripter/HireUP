@@ -53,7 +53,7 @@ const AccountMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 36, height: 36, bgcolor: "#A855F7" }}>
+            <Avatar sx={{ width: 36, height: 36, bgcolor: "#731bc3" }}>
               {employeeData?.username.slice(0, 1).toUpperCase()}
             </Avatar>
           </IconButton>

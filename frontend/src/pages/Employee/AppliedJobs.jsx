@@ -2,6 +2,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAppliedJobsDetailsThunk } from "../../redux/reducers/employee/jobDetails";
 
+const statusColors = {
+  Applied: "#7ec8e3", // Lighter Blue
+  Shortlisted: "#ffd56b", // Lighter Yellow
+  Rejected: "#f85a5a", // Lighter Red
+  Accepted: "#81c784", // Lighter Green
+};
+
 const AppliedJobs = () => {
   const dispatch = useDispatch();
   const employee_id = localStorage.getItem("employee_id");
@@ -24,9 +31,9 @@ const AppliedJobs = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="h-screen bg-gray-300 px-4">
-      <h1 className="text-3xl text-center py-2">Applied Jobs</h1>
-      <div className="mt-4">
+    <div className="h-screen px-4 max-w-5xl mx-auto">
+      <h1 className="text-3xl text-center py-6">Applied Jobs</h1>
+      <div className="py-8">
         {appliedJobsDetails.map((job, i) => (
           <div
             key={job._id}
@@ -39,7 +46,14 @@ const AppliedJobs = () => {
 
             <div className="flex items-center justify-between">
               <p>{formatDate(job.applied_at)}</p>
-              <p className="font-semibold">Status: {job.status}</p>
+              <p className="font-semibold">
+                <span
+                  style={{ backgroundColor: statusColors[job.status] }}
+                  className="px-4 py-1 text-white"
+                >
+                  {job.status}
+                </span>
+              </p>
             </div>
           </div>
         ))}

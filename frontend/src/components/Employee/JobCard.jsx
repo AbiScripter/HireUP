@@ -18,9 +18,12 @@ const JobCard = ({ job, color }) => {
   };
 
   return (
-    <div className="w-96 flex gap-5 flex-col p-2 border rounded-lg bg-gray-400 capitalize">
+    <div
+      className="w-96 flex gap-5 flex-col p-2 border rounded-lg  border-gray-300 capitalize "
+      style={{ backgroundColor: "#E5E4E2" }}
+    >
       <div
-        className="rounded-md p-3 flex flex-col gap-4 relative bg-gray-200"
+        className="rounded-md p-3 flex flex-col gap-4 relative bg-gray-300"
         style={{ backgroundColor: color }}
       >
         <div className=" absolute right-[1.5px] top-[2px] p-1 rounded-full cursor-pointer">
@@ -34,12 +37,8 @@ const JobCard = ({ job, color }) => {
         <div className="mt-4">
           <h4 className="text-sm">{job.company_name}</h4>
 
-          <div className="flex gap-3 justify-between items-start min-h-24">
+          <div className="min-h-24">
             <h1 className="font-bold text-2xl capitalize ">{job.title}</h1>
-
-            <h2 className="capitalize rounded-full bg-gray-400 text-gray-200 min-w-10 min-h-10 flex justify-center items-center font-semibold text-lg">
-              <span>{job.company_name.slice(0, 1)}</span>
-            </h2>
             {/* Add company logo afterwards */}
             {/* <img src="/"/> */}
           </div>
@@ -59,11 +58,11 @@ const JobCard = ({ job, color }) => {
       <div className="flex justify-between items-center p-3">
         <div>
           <h2 className="font-semibold">₹{job.salary}/Year</h2>
-          <p className="text-sm -mt-1 text-gray-400">{job.location.trim()}</p>
+          <p className="text-sm -mt-1 text-gray-500">{job.location.trim()}</p>
         </div>
 
         <button
-          className="bg-black text-white hover:text-black hover:bg-white hover:border px-2 py-1 rounded-full text-sm font-light"
+          className="bg-gray-400 text-white hover:bg-gray-500 px-2 py-1 rounded-sm text-sm font-light"
           type="button"
           onClick={handleDetailsClick}
         >

@@ -1,39 +1,25 @@
-import "./App.css";
-// import Home from "./pages/Home";
-// import JobsPage from "./pages/JobsPage";
-// import EmployeeLogin from "./pages/EmployeeLogin";
-// import EmployeeSignup from "./pages/EmployeeSignup";
-// import EmployeeDashBoard from "./pages/EmployeeDashBoard";
-// import EmployeeProfile from "./pages/EmployeeProfile";
-
-// import EmployerDashboard from "./pages/EmployerDashboard";
-// import EmployerLogin from "./pages/EmployerLogin";
-// import EmployerSignup from "./pages/EmployerSignup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import { lazy } from "react";
-import EmployeeLayout from "./Layout/EmployeeLayout";
-import FavouriteJobs from "./pages/Employee/FavouriteJobs";
-import AppliedJobs from "./pages/Employee/AppliedJobs";
-import EmployerJobDetails from "./pages/Employer/JobDetails";
-import EmployerLayout from "./Layout/EmployerLayout";
+import "./App.css";
 
 // !Lazy Loading
 const Home = lazy(() => import("./pages/Home"));
-const EmployeeLogin = lazy(() => import("./pages/Employee/EmployeeLogin"));
-const EmployeeSignup = lazy(() => import("./pages/Employee/EmployeeSignup"));
-const EmployeeDashBoard = lazy(() =>
-  import("./pages/Employee/EmployeeDashBoard")
-);
+// Employee
+const EmployeeLayout = lazy(() => import("./Layout/EmployeeLayout"));
+const EmployeeLogin = lazy(() => import("./pages/Employee/Login"));
+const EmployeeSignup = lazy(() => import("./pages/Employee/Signup"));
+const EmployeeDashBoard = lazy(() => import("./pages/Employee/DashBoard"));
 const EmployeeJobDetails = lazy(() => import("./pages/Employee/JobDetails"));
-const EmployeeProfile = lazy(() => import("./pages/Employee/EmployeeProfile"));
-
-const EmployerSignup = lazy(() => import("./pages/Employer/EmployerSignup"));
-const EmployerLogin = lazy(() => import("./pages/Employer/EmployerLogin"));
-const EmployerDashboard = lazy(() =>
-  import("./pages/Employer/EmployerDashboard")
-);
+const EmployeeProfile = lazy(() => import("./pages/Employee/Profile"));
+const FavouriteJobs = lazy(() => import("./pages/Employee/FavouriteJobs"));
+const AppliedJobs = lazy(() => import("./pages/Employee/AppliedJobs"));
+// Employer
+const EmployerLayout = lazy(() => import("./Layout/EmployerLayout"));
+const EmployerSignup = lazy(() => import("./pages/Employer/Signup"));
+const EmployerLogin = lazy(() => import("./pages/Employer/Login"));
+const EmployerDashboard = lazy(() => import("./pages/Employer/Dashboard"));
+const EmployerJobDetails = lazy(() => import("./pages/Employer/JobDetails"));
 
 function App() {
   return (

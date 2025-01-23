@@ -2,6 +2,7 @@ import hrOne from "../assets/users/hr1.png";
 import hrTwo from "../assets/users/hr2.png";
 import userOne from "../assets/users/user1.png";
 import userTwo from "../assets/users/user2.png";
+import "./style.css";
 
 const AuthRightHalf = ({ authSvg, type }) => {
   const testimonials = [
@@ -43,22 +44,22 @@ const AuthRightHalf = ({ authSvg, type }) => {
 
   console.log(filteredTestimonals);
   return (
-    <div className="flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-blue-200 p-6">
+    <div className="flex flex-col justify-center items-center p-6 h-screen bg-cover bg-center auth-right">
       {/* SVG Section */}
-      <div className="flex justify-center items-center mb-6">
+      {/* <div className="flex justify-center items-center mb-6">
         <img src={authSvg} alt="svg" className="w-3/4 max-w-md" />
-      </div>
+      </div> */}
 
       {/* Testimonial Section */}
       <div className="space-y-4 w-full px-6">
-        {filteredTestimonals.map((testimonial, index) => (
+        {testimonials.map((testimonial, index) => (
           <div
             key={index}
             className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           >
             <p className="text-gray-700 italic">“{testimonial.text}”</p>
             <div className="flex items-center mt-3">
-              <div className="w-10 h-10 rounded-full bg-blue-300 flex justify-center items-center text-white font-bold">
+              <div className="w-12 h-12 rounded-full bg-blue-300 flex justify-center items-center text-white font-bold">
                 <img
                   src={testimonial.img}
                   className="rounded-full h-full w-full object-cover"
