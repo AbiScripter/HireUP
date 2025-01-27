@@ -7,7 +7,6 @@ import {
   Award,
   Edit3,
   FileText,
-  Brain,
 } from "lucide-react"; // Importing icons from lucide-react
 import { Box, Modal } from "@mui/material";
 import { toast } from "react-toastify";
@@ -87,7 +86,7 @@ const EmployeeProfile = () => {
           {/* Top Skills */}
           <div className="space-y-3">
             <h2 className="text-xl font-semibold text-gray-700 flex items-center gap-2">
-              <Brain size={22} /> Top Skills
+              <Award size={22} /> Top Skills
             </h2>
             <div className="flex flex-wrap gap-3">
               {profile?.topSkills.map((skill, index) => (

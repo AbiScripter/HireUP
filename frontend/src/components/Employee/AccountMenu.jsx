@@ -11,10 +11,11 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { LogOut, Heart, BriefcaseBusiness, UserRound } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getEmployeeBasicDetailsThunk } from "../../redux/reducers/employee/employeeNavbar";
 
 const AccountMenu = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
@@ -30,7 +31,7 @@ const AccountMenu = () => {
   // !Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    navigate("/");
   };
 
   const handleClick = (event) => {

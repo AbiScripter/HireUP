@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { getEmployerData } from "../../services/api";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Avatar,
@@ -12,33 +11,26 @@ import {
   Divider,
   ListItemIcon,
 } from "@mui/material";
-import { LogOut, Heart, BriefcaseBusiness, UserRound } from "lucide-react";
+import { LogOut } from "lucide-react";
+import { getEmployerBasicDetailsThunk } from "../../redux/reducers/employer/employerJob";
 
-const UserInfoCard = () => {
+const AccountMenu = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [employerData, setEmployerData] = useState(null);
+  const { basicDetails } = useSelector((state) => state.employerJob);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    async function fetchEmployerData() {
-      try {
-        const fetchedEmployerData = await getEmployerData();
-        console.log(fetchedEmployerData);
-        console.log(fetchedEmployerData.data.user_data);
-        setEmployerData(fetchedEmployerData.data.user_data);
-      } catch (error) {
-        console.log(error.message);
-        toast.error(error.message);
-      }
+    if (!basicDetails) {
+      dispatch(getEmployerBasicDetailsThunk());
     }
-
-    fetchEmployerData();
-  }, []);
+  }, [dispatch, basicDetails]);
 
   // !Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    navigate("/");
   };
 
   const handleClick = (event) => {
@@ -62,7 +54,7 @@ const UserInfoCard = () => {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              {employerData?.username.slice(0, 1).toUpperCase()}
+              {basicDetails?.username.slice(0, 1).toUpperCase()}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -109,10 +101,10 @@ const UserInfoCard = () => {
           <Avatar />
           <div className="flex-grow">
             <h2 className="font-semibold text-base text-gray-800 capitalize">
-              {employerData?.username || "Username"}
+              {basicDetails?.username || "Username"}
             </h2>
             <h2 className="text-sm text-gray-500">
-              {employerData?.email || "user@example.com"}
+              {basicDetails?.email || "user@example.com"}
             </h2>
           </div>
         </MenuItem>
@@ -130,4 +122,4 @@ const UserInfoCard = () => {
   );
 };
 
-export default UserInfoCard;
+export default AccountMenu;

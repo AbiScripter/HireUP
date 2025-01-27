@@ -1,9 +1,9 @@
 import { Box, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import PostJobForm from "../../components/Employer/PostJobForm";
-import { getPostedJobs } from "../../services/api";
 import EmployerJobCard from "../../components/Employer/JobCard";
+import { useDispatch, useSelector } from "react-redux";
+import { getPostedJobsThunk } from "../../redux/reducers/employer/employerJob";
 
 export const ModalStyle = {
   position: "absolute",
@@ -20,37 +20,17 @@ const EmployerDashboard = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [jobsPostedByEmployer, setJobsPostedByEmployer] = useState([]);
+  // const [jobsPostedByEmployer, setJobsPostedByEmployer] = useState([]);
+  const dispatch = useDispatch();
+  const { postedJobs } = useSelector((state) => state.employerJob);
 
-  function updatedLocalJobs(formJobData) {
-    setJobsPostedByEmployer((prevJobs) => [...prevJobs, formJobData]);
-  }
-
+  //!Fetch Posted Jobs
   useEffect(() => {
-    async function fetchPostedJobs() {
-      try {
-        const response = await getPostedJobs();
-
-        if (!response) {
-          return toast.error("JObs Not Found");
-        }
-
-        if (response.data.jobs.length === 0) {
-          return;
-        }
-
-        setJobsPostedByEmployer(response.data.jobs);
-        toast.success(response.data.msg);
-      } catch (error) {
-        console.log(error.message);
-        toast.error(error.message);
-      }
-    }
-
-    fetchPostedJobs();
+    // Only fetch jobs if they are not already in the Redux state
+    dispatch(getPostedJobsThunk());
   }, []);
 
-  console.log(jobsPostedByEmployer);
+  console.log(postedJobs);
 
   return (
     <>
@@ -70,18 +50,22 @@ const EmployerDashboard = () => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={ModalStyle}>
-              <PostJobForm updatedLocalJobs={updatedLocalJobs} />
+              <PostJobForm handleClose={handleClose} />
             </Box>
           </Modal>
         </div>
 
-        <div className="">
+        <div>
           <h1 className="text-4xl text-center">Your Job Postings</h1>
-          <div className="p-6">
-            {jobsPostedByEmployer.map((job, i) => (
-              <EmployerJobCard key={i} job={job} />
-            ))}
-          </div>
+          {postedJobs.length === 0 ? (
+            <p className="text-xl text-center py-16">No Jobs Posted</p>
+          ) : (
+            <div className="p-6">
+              {postedJobs.map((job, i) => (
+                <EmployerJobCard key={i} job={job} />
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </>

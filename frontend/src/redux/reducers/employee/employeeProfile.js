@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import {
-  getEmployeeProfileData,
-  updateEmployeeProfileData,
-} from "../../../services/api";
 import { uploadResumeToSupabase } from "../../../services/supabaseClient";
+import {
+  getEmployeeProfile,
+  updateEmployeeProfile,
+} from "../../../services/api";
 
 // Fetch employee profile data
 export const fetchProfileThunk = createAsyncThunk(
   "profile/fetchProfiles",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getEmployeeProfileData();
+      const response = await getEmployeeProfile();
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch profile.");
@@ -49,7 +49,7 @@ export const editProfileThunk = createAsyncThunk(
       // Remove the 'resume' field (not part of the backend schema)
       delete data.resume;
 
-      const response = await updateEmployeeProfileData(data);
+      const response = await updateEmployeeProfile(data);
       console.log(response.data);
       return response.data;
     } catch (error) {

@@ -3,19 +3,20 @@ const {
   registerEmployee,
   loginEmployee,
   getAllJobs,
-  getEmployeeData,
-  getEmployeeProfileData,
-  updateEmployeeProfileData,
-  postApplication,
   toggleFavouriteJob,
-  fetchFavouriteJobs,
-  fetchJobDetails,
-  jobApply,
-  fetchJobStatus,
-  fetchAppliedJobs,
-  fetchFavouriteJobDetails,
-  fetchAppliedJobDetails,
+  getEmployeeBasicDetails,
+  getEmployeeProfile,
+  updateEmployeeProfile,
+  applyToJob,
+  getJobDetails,
+  getFavouriteJobs,
+  getFavouriteJobDetails,
+  getAppliedJobs,
+  getAppliedJobDetails,
+  getApplicationStatus,
+  getPaginatedJobs,
 } = require("../controllers/employee");
+
 const employeeAuthMiddleware = require("../middlewares/employeeAuthMiddlware");
 
 const router = express.Router();
@@ -24,35 +25,35 @@ router.post("/register-employee", registerEmployee);
 router.post("/login-employee", loginEmployee);
 
 //!protected Route
-router.get("/employee-data", employeeAuthMiddleware, getEmployeeData);
-router.get("/jobs", employeeAuthMiddleware, getAllJobs);
-router.get(
-  "/employee-profile-data",
-  employeeAuthMiddleware,
-  getEmployeeProfileData
-);
+router.get("/employee-basics", employeeAuthMiddleware, getEmployeeBasicDetails);
 
+// router.get("/jobs", employeeAuthMiddleware, getAllJobs);
+router.post("/job-apply", employeeAuthMiddleware, applyToJob);
+router.get("/job-details", employeeAuthMiddleware, getJobDetails);
+router.get("/application-status", employeeAuthMiddleware, getApplicationStatus);
+
+router.get("/employee-profile", employeeAuthMiddleware, getEmployeeProfile);
 router.put(
-  "/update-employee-profile-data",
+  "/update-employee-profile",
   employeeAuthMiddleware,
-  updateEmployeeProfileData
+  updateEmployeeProfile
 );
 
-router.post("/job-apply", employeeAuthMiddleware, jobApply);
+router.get("/favourite-jobs", employeeAuthMiddleware, getFavouriteJobs);
 router.post("/toggle-favourite", employeeAuthMiddleware, toggleFavouriteJob);
-router.get("/get-favourites", employeeAuthMiddleware, fetchFavouriteJobs);
 router.get(
-  "/get-favourites-details",
+  "/favourite-job-details",
   employeeAuthMiddleware,
-  fetchFavouriteJobDetails
+  getFavouriteJobDetails
 );
-router.get("/get-applied", employeeAuthMiddleware, fetchAppliedJobs);
-router.get("/get-job-details", employeeAuthMiddleware, fetchJobDetails);
+
+router.get("/applied-jobs", employeeAuthMiddleware, getAppliedJobs);
 router.get(
-  "/get-applied-details",
+  "/applied-job-details",
   employeeAuthMiddleware,
-  fetchAppliedJobDetails
+  getAppliedJobDetails
 );
-router.get("/get-job-status", employeeAuthMiddleware, fetchJobStatus);
+
+router.get("/jobs", employeeAuthMiddleware, getPaginatedJobs);
 
 module.exports = router;

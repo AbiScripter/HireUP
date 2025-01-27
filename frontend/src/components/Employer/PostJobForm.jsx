@@ -7,10 +7,11 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import { postJob } from "../../services/api";
-import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { postJobThunk } from "../../redux/reducers/employer/employerJob";
 
-const PostJobForm = ({ updatedLocalJobs }) => {
+const PostJobForm = ({ handleClose }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     company_name: "",
     title: "",
@@ -44,17 +45,8 @@ const PostJobForm = ({ updatedLocalJobs }) => {
     });
 
     if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await postJob(formData);
-
-        // update jobs locally after posting to mongoDB
-        updatedLocalJobs(response.data.job);
-        toast.success(response.data.msg);
-      } catch (error) {
-        toast.error(
-          error.response?.data?.msg || "An error occurred. Please try again."
-        );
-      }
+      dispatch(postJobThunk(formData));
+      handleClose();
     } else {
       setErrors(newErrors);
     }

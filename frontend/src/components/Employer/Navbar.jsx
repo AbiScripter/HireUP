@@ -1,6 +1,6 @@
 import { ChevronsUp } from "lucide-react";
-import UserInfoCard from "./UserInfoCard";
 import { Link } from "react-router-dom";
+import AccountMenu from "./AccoutnMenu";
 
 const Navbar = () => {
   return (
@@ -13,7 +13,7 @@ const Navbar = () => {
         </h1>
       </Link>
 
-      <UserInfoCard />
+      <AccountMenu />
     </div>
   );
 };

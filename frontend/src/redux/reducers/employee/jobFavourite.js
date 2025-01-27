@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import {
-  fetchFavouriteJobDetails,
-  fetchFavouriteJobs,
+  getFavouriteJobDetails,
+  getFavouriteJobs,
   toggleFavouriteJob,
 } from "../../../services/api";
-import { toast } from "react-toastify";
 
 export const fetchFavouritesThunk = createAsyncThunk(
   "profile/fetch-favourites",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchFavouriteJobs();
+      const response = await getFavouriteJobs();
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -50,7 +50,7 @@ export const fetchFavouriteJobDetailsThunk = createAsyncThunk(
         return { jobsData: [] }; // Return an empty response to avoid backend call
       }
       const data = { jobIds: jobIds };
-      const response = await fetchFavouriteJobDetails(data);
+      const response = await getFavouriteJobDetails(data);
       console.log(response);
       return response.data; // Full job details array
     } catch (error) {

@@ -77,7 +77,7 @@ const loginEmployee = async (req, res) => {
 };
 
 // user data like email,username etc
-const getEmployeeData = async (req, res) => {
+const getEmployeeBasicDetails = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId; // Get the user ID from the decoded token
     const employeeData = await Employee.findOne({ _id: employeeId });
@@ -95,7 +95,7 @@ const getEmployeeData = async (req, res) => {
   }
 };
 
-// get posted jobs
+// get all posted jobs
 const getAllJobs = async (req, res) => {
   try {
     const jobs = await Job.find();
@@ -111,7 +111,7 @@ const getAllJobs = async (req, res) => {
 };
 
 // get employee profile data
-const getEmployeeProfileData = async (req, res) => {
+const getEmployeeProfile = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
     const profileData = await EmployeeProfile.findOne({
@@ -128,7 +128,7 @@ const getEmployeeProfileData = async (req, res) => {
   }
 };
 
-const updateEmployeeProfileData = async (req, res) => {
+const updateEmployeeProfile = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
 
@@ -148,13 +148,14 @@ const updateEmployeeProfileData = async (req, res) => {
   }
 };
 
-const jobApply = async (req, res) => {
+const applyToJob = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
     const profileData = await EmployeeProfile.findOne({
       employee_id: employeeId,
     });
 
+    //receive job_status and add
     const { job_id, company_name, job_title } = req.body;
 
     const { fullname, resumeUrl } = profileData;
@@ -199,6 +200,36 @@ const jobApply = async (req, res) => {
   }
 };
 
+const getApplicationStatus = async (req, res) => {
+  const { employee_id, job_id } = req.query; // Extract the query parameters
+
+  // Validate input
+  if (!employee_id || !job_id) {
+    return res.status(400).json({ error: "employeeId and jobId are required" });
+  }
+
+  try {
+    // Find the job application by employeeId and jobId
+    const application = await Application.findOne({
+      employee_id: employee_id,
+      job_id: job_id,
+    });
+
+    if (!application) {
+      return res.json({
+        status: "",
+        msg: "No application found for this job and employee",
+      });
+    }
+
+    // Return the status field
+    res.json({ status: application.application_status });
+  } catch (error) {
+    console.error("Error fetching status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const toggleFavouriteJob = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId; // Extract from authenticated request (e.g., via JWT)
@@ -236,7 +267,7 @@ const toggleFavouriteJob = async (req, res) => {
   }
 };
 
-const fetchFavouriteJobs = async (req, res) => {
+const getFavouriteJobs = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
 
@@ -259,7 +290,7 @@ const fetchFavouriteJobs = async (req, res) => {
   }
 };
 
-const fetchAppliedJobs = async (req, res) => {
+const getAppliedJobs = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
 
@@ -282,7 +313,7 @@ const fetchAppliedJobs = async (req, res) => {
   }
 };
 
-const fetchJobDetails = async (req, res) => {
+const getJobDetails = async (req, res) => {
   try {
     const { job_id } = req.query; // Retrieve job_id from query parameters
 
@@ -301,37 +332,7 @@ const fetchJobDetails = async (req, res) => {
   }
 };
 
-const fetchJobStatus = async (req, res) => {
-  const { employee_id, job_id } = req.query; // Extract the query parameters
-
-  // Validate input
-  if (!employee_id || !job_id) {
-    return res.status(400).json({ error: "employeeId and jobId are required" });
-  }
-
-  try {
-    // Find the job application by employeeId and jobId
-    const application = await Application.findOne({
-      employee_id: employee_id,
-      job_id: job_id,
-    });
-
-    if (!application) {
-      return res.json({
-        status: "",
-        msg: "No application found for this job and employee",
-      });
-    }
-
-    // Return the status field
-    res.json({ status: application.status });
-  } catch (error) {
-    console.error("Error fetching status:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const fetchFavouriteJobDetails = async (req, res) => {
+const getFavouriteJobDetails = async (req, res) => {
   try {
     const { jobIds } = req.query; // Array of job IDs
     const jobsData = await Job.find({ _id: { $in: jobIds } }); // Fetch matching jobs
@@ -344,7 +345,7 @@ const fetchFavouriteJobDetails = async (req, res) => {
   }
 };
 
-const fetchAppliedJobDetails = async (req, res) => {
+const getAppliedJobDetails = async (req, res) => {
   try {
     const { employee_id } = req.query; // Array of job IDs
 
@@ -358,19 +359,41 @@ const fetchAppliedJobDetails = async (req, res) => {
   }
 };
 
+const getPaginatedJobs = async (req, res) => {
+  try {
+    const { page } = req.query || 1; // Default to page 1
+    const limit = 10;
+    const skip = (Number(page) - 1) * limit;
+    console.log("backend page", page);
+
+    const totalJobs = await Job.countDocuments();
+    const jobs = await Job.find().skip(skip).limit(limit); // Fetch jobs for the current page
+
+    res.status(200).json({
+      totalJobs,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalJobs / limit),
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   registerEmployee,
   loginEmployee,
-  getEmployeeData,
+  getEmployeeBasicDetails,
   getAllJobs,
-  getEmployeeProfileData,
-  updateEmployeeProfileData,
-  jobApply,
+  getEmployeeProfile,
+  updateEmployeeProfile,
+  applyToJob,
   toggleFavouriteJob,
-  fetchFavouriteJobs,
-  fetchAppliedJobs,
-  fetchJobDetails,
-  fetchJobStatus,
-  fetchFavouriteJobDetails,
-  fetchAppliedJobDetails,
+  getFavouriteJobs,
+  getAppliedJobs,
+  getJobDetails,
+  getApplicationStatus,
+  getFavouriteJobDetails,
+  getAppliedJobDetails,
+  getPaginatedJobs,
 };

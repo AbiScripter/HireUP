@@ -22,36 +22,39 @@ export const registerEmployee = (userData) =>
 export const loginEmployee = (loginData) =>
   API.post("/login-employee", loginData);
 
-// !Employee protected
-export const getEmployeeData = () => API.get("/employee-data");
-export const getAllJobs = () => API.get("/jobs");
-export const getEmployeeProfileData = () => API.get("/employee-profile-data");
+// !Employee protected APIs
+// basic details
+export const getEmployeeBasicDetails = () => API.get("/employee-basics");
 
-export const updateEmployeeProfileData = (data) =>
-  API.put("/update-employee-profile-data", data);
+// profile
+export const getEmployeeProfile = () => API.get("/employee-profile");
+export const updateEmployeeProfile = (data) =>
+  API.put("/update-employee-profile", data);
 
-export const jobApply = (data) => API.post("/job-apply", data);
-
-export const toggleFavouriteJob = (data) => API.post("/toggle-favourite", data);
-export const fetchFavouriteJobs = () => API.get("/get-favourites");
-export const fetchAppliedJobs = () => API.get("/get-applied");
-
-export const fetchJobDetails = (data) =>
-  API.get("/get-job-details", { params: data });
-
-export const fetchFavouriteJobDetails = (data) =>
-  API.get("/get-favourites-details", { params: data });
-
-export const fetchAppliedJobDetails = (data) =>
-  API.get("/get-applied-details", { params: data });
-
-export const fetchJobStatus = (data) =>
-  API.get("/get-job-status", {
+// jobs
+// export const getAllJobs = () => API.get("/jobs");
+export const getPaginatedJobs = (data) => API.get("/jobs", { params: data });
+export const applyToJob = (data) => API.post("/job-apply", data);
+export const getJobDetails = (data) =>
+  API.get("/job-details", { params: data });
+export const getApplicationStatus = (data) =>
+  API.get("/application-status", {
     params: {
       employee_id: data.employee_id,
       job_id: data.job_id,
     },
   });
+
+// favourites
+export const toggleFavouriteJob = (data) => API.post("/toggle-favourite", data);
+export const getFavouriteJobs = () => API.get("/favourite-jobs");
+export const getFavouriteJobDetails = (data) =>
+  API.get("/favourite-job-details", { params: data });
+
+// applied
+export const getAppliedJobs = () => API.get("/applied-jobs");
+export const getAppliedJobDetails = (data) =>
+  API.get("/applied-job-details", { params: data });
 
 //!Employer Auth APIs
 export const registerEmployer = (userData) =>
@@ -60,13 +63,19 @@ export const loginEmployer = (loginData) =>
   API.post("/login-employer", loginData);
 
 // !Employer protected
-export const getEmployerData = () => API.get("/employer-data");
-export const postJob = (formData) => API.post("/post-job", formData);
-export const getPostedJobs = () => API.get("/posted-jobs");
-export const getApplicants = (data) =>
-  API.get("/view-applicants", { params: data });
-export const getJobDetails = (data) =>
-  API.get("/employer-get-job-details", { params: data });
+// basic details
+export const getEmployerBasicDetails = () => API.get("/employer-basics");
 
-export const updateJobStatus = (data) =>
-  API.put("/update-job-status", { params: data });
+//job
+export const getEmployerJobDetails = (data) =>
+  API.get("/employer-job-details", { params: data });
+export const postJob = (formData) => API.post("/post-job", formData);
+
+//not deleting the job just changing the job_status because if we delete the job entirely all the dbs which are having this job data will be in issue
+export const deleteJob = (data) => API.put("/delete-job", { params: data });
+export const updateApplicationStatus = (data) =>
+  API.put("/update-application-status", { params: data });
+export const getPostedJobs = () => API.get("/posted-jobs");
+
+//applicants
+export const getApplicants = (data) => API.get("/applicants", { params: data });

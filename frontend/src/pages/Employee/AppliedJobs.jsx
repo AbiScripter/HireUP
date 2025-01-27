@@ -47,12 +47,20 @@ const AppliedJobs = () => {
             <div className="flex items-center justify-between">
               <p>{formatDate(job.applied_at)}</p>
               <p className="font-semibold">
-                <span
-                  style={{ backgroundColor: statusColors[job.status] }}
-                  className="px-4 py-1 text-white"
-                >
-                  {job.status}
-                </span>
+                {job?.job_status === "Inactive" ? (
+                  <span className="text-red-500">
+                    Job Deleted By the Employer
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      backgroundColor: statusColors[job.application_status],
+                    }}
+                    className="px-4 py-1 text-white"
+                  >
+                    {job?.application_status}
+                  </span>
+                )}
               </p>
             </div>
           </div>

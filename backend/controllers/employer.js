@@ -57,7 +57,7 @@ const loginEmployer = async (req, res) => {
 };
 
 // user data like email,username etc
-const getEmployerData = async (req, res) => {
+const getEmployerBasicDetails = async (req, res) => {
   try {
     const employerId = req.employer.employerId; // Get the user ID from the decoded token
     console.log(employerId);
@@ -120,7 +120,11 @@ const getPostedJobs = async (req, res) => {
   try {
     const employerId = req.employer.employerId; // Get the user ID from the decoded token
 
-    const jobs = await Job.find({ employer_id: employerId });
+    // Fetch only jobs with `job_status: "Active"`
+    const jobs = await Job.find({
+      employer_id: employerId,
+      job_status: "Active",
+    });
 
     res.status(200).json({
       msg: "Posted Jobs fetched Successfully",
@@ -132,7 +136,7 @@ const getPostedJobs = async (req, res) => {
   }
 };
 
-const fetchJobDetails = async (req, res) => {
+const getJobDetails = async (req, res) => {
   try {
     const { job_id } = req.query; // Retrieve job_id from query parameters
 
@@ -171,18 +175,18 @@ const getJobApplicants = async (req, res) => {
   }
 };
 
-const updateJobStatus = async (req, res) => {
+const updateApplicationStatus = async (req, res) => {
   try {
-    const { job_id, employee_id, status } = req.body.params; // Extract data from the request body
+    const { job_id, employee_id, application_status } = req.body.params; // Extract data from the request body
 
-    if (!job_id || !employee_id || !status) {
+    if (!job_id || !employee_id || !application_status) {
       return res.status(400).json({ msg: "Missing required fields" });
     }
 
     // Find the document by job_id and employee_id and update the status
     const result = await Application.updateOne(
       { job_id, employee_id }, // Query to find the document
-      { $set: { status } } // Update the status field
+      { $set: { application_status } } // Update the status field
     );
 
     // Check if the document was updated
@@ -190,9 +194,45 @@ const updateJobStatus = async (req, res) => {
       return res.status(404).json({ msg: "Application not found" });
     }
 
-    res.status(200).json({ msg: "Job status updated successfully", result });
+    res
+      .status(200)
+      .json({ msg: "Application status updated successfully", result });
   } catch (error) {
-    console.error("Error updating job status:", error);
+    console.error("Error updating application status:", error);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+//not deleting the job just changing the job_status because if we delete the job entirely all the dbs which are having this job data will be in issue
+const deleteJob = async (req, res) => {
+  try {
+    const { job_id } = req.body.params; // Extract job_id from request body
+
+    //Mark the job as Inactive
+    const updatedJob = await Job.findOneAndUpdate(
+      { _id: job_id },
+      { job_status: "Inactive" },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedJob) {
+      return res.status(404).json({ msg: "Job not found" });
+    }
+
+    // Update all related applications
+    const updatedApplications = await Application.updateMany(
+      { job_id: job_id }, // Find all applications for the given job
+      { job_status: "Inactive" } // Update their job_status to Inactive
+    );
+
+    console.log("yud", updatedJob);
+    res.status(200).json({
+      msg: "Job and associated applications updated successfully",
+      job: updatedJob,
+      applicationsUpdated: updatedApplications.modifiedCount, // Number of applications updated
+    });
+  } catch (error) {
+    console.error("Error updating job and applications:", error);
     res.status(500).json({ msg: "Internal server error" });
   }
 };
@@ -200,10 +240,11 @@ const updateJobStatus = async (req, res) => {
 module.exports = {
   registerEmployer,
   loginEmployer,
-  getEmployerData,
+  getEmployerBasicDetails,
   postJob,
   getPostedJobs,
   getJobApplicants,
-  fetchJobDetails,
-  updateJobStatus,
+  getJobDetails,
+  updateApplicationStatus,
+  deleteJob,
 };

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import {
-  fetchAppliedJobDetails,
-  fetchAppliedJobs,
-  fetchJobDetails,
-  fetchJobStatus,
-  jobApply,
+  applyToJob,
+  getApplicationStatus,
+  getAppliedJobDetails,
+  getAppliedJobs,
+  getJobDetails,
 } from "../../../services/api";
 
 export const getJobDetailsThunk = createAsyncThunk(
@@ -14,7 +14,7 @@ export const getJobDetailsThunk = createAsyncThunk(
     try {
       const data = { job_id: job_id };
       console.log(data);
-      const response = await fetchJobDetails(data);
+      const response = await getJobDetails(data);
 
       return response.data;
     } catch (error) {
@@ -29,7 +29,7 @@ export const getAppliedJobsThunk = createAsyncThunk(
   "employee/get-applied",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchAppliedJobs();
+      const response = await getAppliedJobs();
 
       return response.data;
     } catch (error) {
@@ -40,13 +40,13 @@ export const getAppliedJobsThunk = createAsyncThunk(
   }
 );
 
-export const getJobStatusThunk = createAsyncThunk(
-  "employee/get-jobStatus",
+export const getApplicationStatusThunk = createAsyncThunk(
+  "employee/get-application-status",
   async (data, { rejectWithValue }) => {
     try {
       console.log("Status thunk Data", data);
       // const data = { job_id: job_id };
-      const response = await fetchJobStatus(data);
+      const response = await getApplicationStatus(data);
       console.log("response Status Redux :", response);
       return response.data;
     } catch (error) {
@@ -71,7 +71,7 @@ export const jobApplyThunk = createAsyncThunk(
 
       const data = passedData;
       console.log("data for jobApply", data);
-      const response = await jobApply(data);
+      const response = await applyToJob(data);
 
       return response.data;
     } catch (error) {
@@ -88,7 +88,7 @@ export const fetchAppliedJobsDetailsThunk = createAsyncThunk(
     try {
       console.log("data insdie fetchapplyredux", employee_id);
       const data = { employee_id: employee_id };
-      const response = await fetchAppliedJobDetails(data);
+      const response = await getAppliedJobDetails(data);
       console.log(response);
       return response.data; // Full job details array
     } catch (error) {
@@ -109,7 +109,7 @@ const jobDetailsSlice = createSlice({
     jobPageData: null,
     loading: false,
     error: null,
-    currentJobStatus: "",
+    currentApplicationStatus: "",
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -137,6 +137,8 @@ const jobDetailsSlice = createSlice({
       .addCase(jobApplyThunk.fulfilled, (state, action) => {
         const job_id = action.meta.arg; // Get the job ID that was toggled
         state.appliedJobs.push(job_id);
+        state.currentApplicationStatus = "Applied";
+
         state.loading = false;
         toast.success(action.payload.msg);
       })
@@ -162,21 +164,22 @@ const jobDetailsSlice = createSlice({
         toast.error(state.error);
       })
 
-      //Get Job Status
-      .addCase(getJobStatusThunk.pending, (state) => {
+      //Get application Status
+      .addCase(getApplicationStatusThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getJobStatusThunk.fulfilled, (state, action) => {
-        state.currentJobStatus = action.payload.status;
+      .addCase(getApplicationStatusThunk.fulfilled, (state, action) => {
+        state.currentApplicationStatus = action.payload.status;
         state.loading = false;
       })
-      .addCase(getJobStatusThunk.rejected, (state, action) => {
+      .addCase(getApplicationStatusThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         toast.error(state.error);
       })
 
+      //applied job details - applied jobs page
       .addCase(fetchAppliedJobsDetailsThunk.pending, (state) => {
         state.loading = true;
       })

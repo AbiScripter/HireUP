@@ -37,6 +37,11 @@ const jobSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  job_status: {
+    type: String,
+    enum: ["Active", "Inactive"],
+    default: "Active",
+  },
   employer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employer", // reference to  employer model

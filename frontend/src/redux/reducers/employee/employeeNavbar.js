@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { getEmployeeData } from "../../../services/api";
+import { getEmployeeBasicDetails } from "../../../services/api";
 
 // Async Thunk for Employee Basic Data like email and username
 export const getEmployeeBasicDetailsThunk = createAsyncThunk(
   "employee/get-basicDetails",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getEmployeeData();
+      const response = await getEmployeeBasicDetails();
       // console.log("employee Detailssss:", response);
       return response.data;
     } catch (error) {

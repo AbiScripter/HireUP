@@ -24,7 +24,12 @@ const applicationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  status: {
+  job_status: {
+    type: String,
+    enum: ["Active", "Inactive"],
+    default: "Active",
+  },
+  application_status: {
     type: String,
     enum: ["Applied", "Shortlisted", "Rejected", "Accepted"],
     default: "Applied",

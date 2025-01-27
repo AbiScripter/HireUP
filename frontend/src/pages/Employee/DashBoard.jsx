@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import JobCard from "../../components/Employee/JobCard";
-import { fetchJobsThunk } from "../../redux/reducers/employee/employee";
 import { fetchFavouritesThunk } from "../../redux/reducers/employee/jobFavourite";
+import { fetchPaginatedJobs } from "../../redux/reducers/employee/employee";
 
 const colors = [
   "#FECACF", // Light Red
@@ -23,47 +23,44 @@ const EmployeeDashBoard = () => {
   const {
     jobs,
     loading: jobsLoading,
+    currentPage,
+    totalPages,
     // error: jobsFetchingError,
   } = useSelector((state) => state.employee);
   const { favouriteJobs } = useSelector((state) => state.jobFavourite);
-  // const { appliedJobs } = useSelector((state) => state.jobDetails);
-
   console.log("favouriteJobs from dashboard", favouriteJobs);
-  // console.log("appliedJobs from dashboard", appliedJobs);
-  // const { favouriteJobs } = useSelector((state) => state.jobFavourite);
-  // const { appliedJobs } = useSelector((state) => state.jobDetails);
 
-  // console.log({ favs: favouriteJobs, applied: appliedJobs });
+  // const { jobs, currentPage, totalPages, loading } = useSelector(
+  //   (state) => state.jobs
+  // );
+  console.log(currentPage, totalPages, jobs);
+  // Fetch jobs for the current page
+  useEffect(() => {
+    dispatch(fetchPaginatedJobs(currentPage));
+  }, [dispatch, currentPage]);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      dispatch(fetchPaginatedJobs(page));
+    }
+  };
 
   //!Fetch All Jobs
-  useEffect(() => {
-    // Only fetch jobs if they are not already in the Redux state
-    if (jobs.length === 0) {
-      dispatch(fetchJobsThunk());
-    }
-  }, [dispatch, jobs]);
+  // useEffect(() => {
+  //   // Only fetch jobs if they are not already in the Redux state
+  //   if (jobs.length === 0) {
+  //     dispatch(fetchJobsThunk());
+  //   }
+  // }, [dispatch, jobs]);
 
   //!Fetch Fav Job Ids
   useEffect(() => {
     dispatch(fetchFavouritesThunk());
   }, [dispatch]);
 
-  //!Fetch Applied Job Ids
-  // useEffect(() => {
-  //   dispatch(getAppliedJobsThunk());
-  // }, [dispatch]);
-
   if (jobsLoading) {
     return <Loader />;
   }
-
-  // if (jobsFetchingError) {
-  //   return (
-  //     <p className="text-red-500">
-  //       Error loading jobs: {jobsFetchingError.message}
-  //     </p>
-  //   );
-  // }
 
   return (
     <main className="h-screen px-4">
@@ -72,6 +69,29 @@ const EmployeeDashBoard = () => {
         {jobs.map((job, i) => (
           <JobCard job={job} key={job._id} color={colors[i % colors.length]} />
         ))}
+      </div>
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          className={`px-4 py-2 mx-1 text-white bg-gray-600 rounded-md hover:bg-gray-700 ${
+            currentPage === 1 && "cursor-not-allowed"
+          }`}
+          disabled={currentPage === 1}
+        >
+          Prev
+        </button>
+        <span className="px-4 py-2 mx-1 bg-gray-100 text-gray-800 rounded-md">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          className={`px-4 py-2 mx-1 text-white bg-gray-600 rounded-md hover:bg-gray-700 ${
+            currentPage === totalPages && "cursor-not-allowed"
+          }`}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </main>
   );

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getJobApplicantsThunk,
   getJobDetailsThunk,
-  updateJobStatusThunk,
+  updateApplicationStatusThunk,
 } from "../../redux/reducers/employer/employerJob";
 import { Box, LinearProgress, MenuItem, Select } from "@mui/material";
 
@@ -43,62 +43,73 @@ const EmployerJobDetails = () => {
 
   return (
     <div className="mt-10">
-      <div className="flex flex-col gap-8 bg-gray p-4 w-full">
-        <div className="flex justify-between">
-          {/* <h1 className="text-3xl font-semibold">
-          {job.company_name.slice(0, 1).toUpperCase()}
-        </h1> */}
-          <div className="flex flex-col">
-            <h2 className="text-2xl font-semibold capitalize">
-              {job?.company_name}
+      <div className="max-w-4xl mx-auto my-10 bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
+        {/* Header with Job Title and Status */}
+        <div className="bg-gray-800 text-white p-6 rounded-t-xl">
+          <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
+          <p className="mt-2 text-lg capitalize">{job?.company_name}</p>
+        </div>
+
+        {/* Job Details Section */}
+        <div className="p-8 space-y-6">
+          {/* Job Info Grid */}
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">Location</h2>
+              <p className="text-gray-600">{job?.location}</p>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">
+                Employment Type
+              </h2>
+              <p className="text-gray-600">{job?.employment_type}</p>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">Work Mode</h2>
+              <p className="text-gray-600">{job?.work_mode}</p>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">Salary</h2>
+              <p className="text-gray-600">
+                ₹{job?.salary.toLocaleString("en-IN")}
+              </p>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">
+                Experience Required
+              </h2>
+              <p className="text-gray-600">{job?.years_of_experience} years</p>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">
+                Open Positions
+              </h2>
+              <p className="text-gray-600">{job?.no_of_positions}</p>
+            </div>
+          </div>
+
+          {/* Job Description */}
+          <div className="min-h-64">
+            <h2 className="text-xl font-semibold text-gray-700">
+              Job Description
             </h2>
-            <p className="capitalize">{job?.title}</p>
-            <p className="capitalize text-gray-400 text-sm">
-              {job?.location} - {job?.work_mode}
+            <p className="text-gray-600 leading-relaxed">
+              {job?.description
+                ? job?.description
+                : "No detailed description has been provided for this role."}
             </p>
           </div>
         </div>
-
-        <div className="flex gap-4 flex-wrap">
-          <div
-            className="flex flex-col gap-1 rounded-xl px-8 py-2 items-center bg-gray-300"
-            style={{ backgroundColor: "#A7F3D0" }}
-          >
-            <p className="text-xs">Salary</p>
-            <p className="text-lg">{job?.salary}/Year</p>
-          </div>
-          <div
-            className="flex flex-col gap-1 rounded-xl px-8 py-2 items-center bg-gray-300"
-            style={{ backgroundColor: "#93C5FD" }}
-          >
-            <p className="text-xs">Job Type</p>
-            <p className="text-lg">{job?.employment_type}</p>
-          </div>
-
-          <div
-            className="flex flex-col gap-1 rounded-xl px-8 py-2 items-center bg-gray-300"
-            style={{ backgroundColor: "#FECAC0" }}
-          >
-            <p className="text-xs">Number Of Positions</p>
-            <p className="text-lg"> {job?.no_of_positions}</p>
-          </div>
-
-          <div
-            className="flex flex-col gap-1 rounded-xl px-8 py-2 items-center bg-gray-300"
-            style={{ backgroundColor: "#A5B4FC" }}
-          >
-            <p className="text-xs">Years Of Experience</p>
-            <p className="text-lg">{job?.years_of_experience}</p>
-          </div>
-        </div>
-
-        <div>
-          <h1 className="text-2xl font-semibold">Job Description</h1>
-          <p className="text-gray-400 text-sm">{job?.description}</p>
-        </div>
-
         {/* Applicants */}
         <div>
+          <div>
+            {applicants.length === 0 && (
+              <h1 className="text-xl py-6 text-center">
+                No applicants yet for this job.
+              </h1>
+            )}
+          </div>
+
           <Box sx={{ width: "100%" }}>{loading && <LinearProgress />}</Box>
           {applicants.map((applicant) => {
             return <DetailCard applicant={applicant} key={applicant._id} />;
@@ -111,16 +122,18 @@ const EmployerJobDetails = () => {
 
 const DetailCard = ({ applicant }) => {
   const dispatch = useDispatch();
-  const [currStatus, setCurrentStatus] = useState(applicant?.status);
+  const [currStatus, setCurrentStatus] = useState(
+    applicant?.application_status
+  );
 
   const handleChange = (event) => {
     const { employee_id, job_id } = applicant;
     setCurrentStatus(event.target.value);
     dispatch(
-      updateJobStatusThunk({
+      updateApplicationStatusThunk({
         employee_id,
         job_id,
-        status: event.target.value,
+        application_status: event.target.value,
       })
     );
   };
