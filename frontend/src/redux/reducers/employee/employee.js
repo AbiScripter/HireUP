@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { getAllJobs } from "../../../services/api";
 import { toast } from "react-toastify";
 import { getPaginatedJobs } from "../../../services/api";
 
@@ -21,15 +20,11 @@ import { getPaginatedJobs } from "../../../services/api";
 
 export const fetchPaginatedJobs = createAsyncThunk(
   "jobs/fetchPaginatedJobs",
-  async (page, { rejectWithValue }) => {
+  async ({ page, filters }, { rejectWithValue }) => {
     try {
-      console.log("in paginatred redx", page);
-      const data = { page: page };
-      const response = await getPaginatedJobs(data);
-      if (response.data.jobs.length === 0) {
-        return rejectWithValue("No jobs found.");
-      }
-      return response.data; // Return the list of jobs
+      console.log("redux filter", page, filters);
+      const response = await getPaginatedJobs({ page, ...filters });
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch jobs.");
     }
@@ -43,33 +38,29 @@ const employeeSlice = createSlice({
     totalJobs: 0,
     currentPage: 1,
     totalPages: 1,
+    filters: {
+      employment_type: [],
+      salary: [],
+      work_mode: [],
+      search_term: "",
+    },
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setFilters: (state, action) => {
+      state.filters = action.payload;
+      state.currentPage = 1; // Reset to first page when filters change
+    },
+  },
   extraReducers: (builder) => {
     builder
-      //Fetch all jobs
-      // .addCase(fetchJobsThunk.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(fetchJobsThunk.fulfilled, (state, action) => {
-      //   state.jobs = action.payload; // Set the fetched jobs
-      //   state.loading = false;
-      // })
-      // .addCase(fetchJobsThunk.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.payload;
-      //   toast.error(state.error);
-      // });
-
       .addCase(fetchPaginatedJobs.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchPaginatedJobs.fulfilled, (state, action) => {
-        state.jobs = action.payload.jobs; // Set the fetched jobs
+        state.jobs = action.payload.jobs;
         state.totalJobs = action.payload.totalJobs;
         state.currentPage = action.payload.currentPage;
         state.totalPages = action.payload.totalPages;
@@ -82,5 +73,7 @@ const employeeSlice = createSlice({
       });
   },
 });
+
+export const { setFilters } = employeeSlice.actions;
 
 export default employeeSlice.reducer;

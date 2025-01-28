@@ -7,7 +7,11 @@ module.exports = {
         primary: "#902bf5",
         primaryhover: "#731bc3",
       },
+      screens: {
+        xs: "340px",
+      },
     },
   },
+
   plugins: [],
 };

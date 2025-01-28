@@ -359,20 +359,75 @@ const getAppliedJobDetails = async (req, res) => {
   }
 };
 
+// const getPaginatedJobs = async (req, res) => {
+//   try {
+//     const { page = 1 } = req.query; // Default to page 1
+//     const limit = 10;
+//     const skip = (Number(page) - 1) * limit;
+//     console.log("backend page", page);
+
+//     const totalJobs = await Job.countDocuments();
+//     const jobs = await Job.find().skip(skip).limit(limit); // Fetch jobs for the current page
+
+//     res.status(200).json({
+//       totalJobs,
+//       currentPage: Number(page),
+//       totalPages: Math.ceil(totalJobs / limit),
+//       jobs,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
 const getPaginatedJobs = async (req, res) => {
   try {
-    const { page } = req.query || 1; // Default to page 1
+    const {
+      page = 1,
+      employment_type,
+      salary,
+      work_mode,
+      search_term,
+    } = req.query;
     const limit = 10;
     const skip = (Number(page) - 1) * limit;
-    console.log("backend page", page);
 
-    const totalJobs = await Job.countDocuments();
-    const jobs = await Job.find().skip(skip).limit(limit); // Fetch jobs for the current page
+    const filter = {};
+    if (employment_type) filter.employment_type = employment_type;
+    if (work_mode) filter.work_mode = work_mode;
+    if (salary) {
+      if (salary.includes("below_5")) filter.salary = { $lte: 500000 };
+      if (salary.includes("below_10")) filter.salary = { $lte: 1000000 };
+      if (salary.includes("above_10")) filter.salary = { $gte: 1000000 };
+    }
+
+    if (search_term) {
+      filter.$or = [
+        { title: { $regex: search_term, $options: "i" } },
+        // { description: { $regex: search, $options: "i" } }, //
+        { company_name: { $regex: search_term, $options: "i" } },
+      ];
+    }
+    const totalJobs = await Job.countDocuments(filter);
+    const totalPages = Math.ceil(totalJobs / limit);
+
+    // If no jobs are found, return an empty array
+    if (totalJobs === 0) {
+      return res.status(200).json({
+        totalJobs: 0,
+        currentPage: Number(page),
+        totalPages: 0,
+        jobs: [],
+      });
+    }
+
+    // Fetch jobs with pagination
+    const jobs = await Job.find(filter).skip(skip).limit(limit);
 
     res.status(200).json({
       totalJobs,
       currentPage: Number(page),
-      totalPages: Math.ceil(totalJobs / limit),
+      totalPages,
       jobs,
     });
   } catch (error) {
