@@ -18,7 +18,7 @@ app.use("/api/", employeeRouter);
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://your-frontend-url.com"],
+    origin: ["http://localhost:3000", "https://hire-up-xi.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
