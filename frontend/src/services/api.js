@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export const API = axios.create({ baseURL: "http://localhost:5000/api" });
+export const API = axios.create({
+  baseURL: "https://hireup-backend-osp0.onrender.com/api",
+});
 
 // Adding a request interceptor to include the token in the Authorization header
 API.interceptors.request.use(

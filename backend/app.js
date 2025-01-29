@@ -16,6 +16,15 @@ app.use(cors());
 app.use("/api/", employerRouter);
 app.use("/api/", employeeRouter);
 
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://your-frontend-url.com"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 // !Port
 const port = process.env.PORT || 5000;
 
