@@ -39,11 +39,11 @@ const JobFilters = () => {
 
   return (
     <div className="flex flex-col gap-6 w-full p-4">
-      <div className="flex justify-between items-center flex-col gap-2">
-        <h1 className="text-xl font-bold">Filters</h1>
+      <div className="flex justify-between items-center flex-col xl:flex-row gap-2">
+        <h1 className="text-xl  font-bold">Filters</h1>
         <button
           onClick={handleReset}
-          className="text-red-500 font-semibold cursor-pointer px-4 py-1 bg-red-100 text-center"
+          className="text-red-500 text-sm font-semibold cursor-pointer px-4 py-1 bg-red-100 text-center"
         >
           Reset Search & Filters
         </button>

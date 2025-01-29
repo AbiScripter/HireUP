@@ -26,16 +26,19 @@ const FavouriteJobs = () => {
   }, [dispatch, favouriteJobs.length]);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   return (
-    <main className="h-screen px-4">
+    <main className="h-screen px-4 md:w-3/5 xl:w-2/5 mx-auto">
       <h1 className="text-4xl text-center py-6">Favourite Jobs</h1>
-      <div className="flex gap-4 flex-wrap py-6">
-        {favouriteJobDetails.map((job, i) => (
-          <JobCard key={i} job={job} />
-        ))}
-      </div>
+      {favouriteJobDetails.length === 0 ? (
+        <h1 className="text-xl text-center mt-10">No favorite jobs yet.</h1>
+      ) : (
+        <div className="flex gap-4 flex-wrap py-6">
+          {favouriteJobDetails.map((job, i) => (
+            <JobCard key={i} job={job} />
+          ))}
+        </div>
+      )}
     </main>
   );
 };

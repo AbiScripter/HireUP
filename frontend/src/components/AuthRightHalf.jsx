@@ -44,7 +44,7 @@ const AuthRightHalf = ({ authSvg, type }) => {
 
   console.log(filteredTestimonals);
   return (
-    <div className="flex flex-col justify-center items-center p-6 h-screen bg-cover bg-center auth-right">
+    <div className="flex-col justify-center items-center p-6 h-screen bg-cover bg-center auth-right hidden lg:flex">
       {/* SVG Section */}
       {/* <div className="flex justify-center items-center mb-6">
         <img src={authSvg} alt="svg" className="w-3/4 max-w-md" />

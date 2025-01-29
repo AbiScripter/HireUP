@@ -6,14 +6,16 @@ import {
   getJobDetailsThunk,
   updateApplicationStatusThunk,
 } from "../../redux/reducers/employer/employerJob";
-import { Box, LinearProgress, MenuItem, Select } from "@mui/material";
-
-const statusColors = {
-  Applied: "#7ec8e3", // Lighter Blue
-  Shortlisted: "#ffd56b", // Lighter Yellow
-  Rejected: "#f85a5a", // Lighter Red
-  Accepted: "#81c784", // Lighter Green
-};
+import { Box, Divider, LinearProgress, MenuItem, Select } from "@mui/material";
+import {
+  MapPin,
+  Globe2,
+  Briefcase,
+  Users,
+  IndianRupee,
+  GraduationCap,
+  ScrollText,
+} from "lucide-react";
 
 const EmployerJobDetails = () => {
   const dispatch = useDispatch();
@@ -42,66 +44,66 @@ const EmployerJobDetails = () => {
   // }
 
   return (
-    <div className="mt-10">
-      <div className="max-w-4xl mx-auto my-10 bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
+    <div className="max-w-4xl mx-auto my-10">
+      <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
         {/* Header with Job Title and Status */}
-        <div className="bg-gray-800 text-white p-6 rounded-t-xl">
-          <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
-          <p className="mt-2 text-lg capitalize">{job?.company_name}</p>
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-primary via-primary/90 to-primary text-white p-8">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              {/* <Building2 className="w-8 h-8" /> */}
+              <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
+            </div>
+            <p className="text-xl opacity-90 capitalize">{job?.company_name}</p>
+          </div>
         </div>
 
-        {/* Job Details Section */}
-        <div className="p-8 space-y-6">
-          {/* Job Info Grid */}
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-700">Location</h2>
-              <p className="text-gray-600">{job?.location}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-700">
-                Employment Type
-              </h2>
-              <p className="text-gray-600">{job?.employment_type}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-700">Work Mode</h2>
-              <p className="text-gray-600">{job?.work_mode}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-700">Salary</h2>
-              <p className="text-gray-600">
-                ₹{job?.salary.toLocaleString("en-IN")}
-              </p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-700">
-                Experience Required
-              </h2>
-              <p className="text-gray-600">{job?.years_of_experience} years</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-700">
-                Open Positions
-              </h2>
-              <p className="text-gray-600">{job?.no_of_positions}</p>
-            </div>
+        {/* Main Content */}
+        <div className="p-6 space-y-8">
+          {/* Info Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <InfoItem icon={MapPin} title="Location" value={job?.location} />
+            <InfoItem
+              icon={Briefcase}
+              title="Employment Type"
+              value={job?.employment_type}
+            />
+            <InfoItem icon={Globe2} title="Work Mode" value={job?.work_mode} />
+            <InfoItem
+              icon={IndianRupee}
+              title="Salary"
+              value={`₹${job?.salary?.toLocaleString("en-IN")}`}
+            />
+            <InfoItem
+              icon={GraduationCap}
+              title="Experience Required"
+              value={`${job?.years_of_experience} years`}
+            />
+            <InfoItem
+              icon={Users}
+              title="Open Positions"
+              value={job?.no_of_positions}
+            />
           </div>
 
           {/* Job Description */}
-          <div className="min-h-64">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Job Description
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              {job?.description
-                ? job?.description
-                : "No detailed description has been provided for this role."}
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="flex items-center space-x-2 mb-4">
+              <ScrollText className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-semibold text-gray-700">
+                Job Description
+              </h2>
+            </div>
+            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+              {job?.description ||
+                "No detailed description has been provided for this role."}
             </p>
           </div>
         </div>
+
         {/* Applicants */}
-        <div>
+        <div className="p-8">
+          <h1 className="text-center text-xl mb-2">Applicants</h1>
           <div>
             {applicants.length === 0 && (
               <h1 className="text-xl py-6 text-center">
@@ -144,34 +146,50 @@ const DetailCard = ({ applicant }) => {
   }
 
   return (
-    <div className="grid grid-cols-4 items-center py-4 border-b">
-      <p className="capitalize">{applicant.fullname}</p>
-      <p>{formatDate(applicant.applied_at)}</p>
-      <p className="">
-        <a
-          href={applicant.resumeUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="underline hover:no-underline text-blue-500"
-        >
-          View Resume
-        </a>
-      </p>
+    <>
+      <div className="grid grid-cols-2 xs:grid-cols-3 gap-y-4 md:grid-cols-4 items-center py-6 bg-white rounded-lg shadow-sm p-4 mb-4 border">
+        <p className="capitalize ">{applicant.fullname}</p>
+        <p className="hidden xs:block ">{formatDate(applicant.applied_at)}</p>
+        <p className="text-right md:text-left">
+          <a
+            href={applicant.resumeUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:no-underline text-blue-500"
+          >
+            View Resume
+          </a>
+        </p>
 
-      <Select
-        labelId="job-status"
-        id="job-status"
-        value={currStatus}
-        label="Status"
-        onChange={handleChange}
-      >
-        <MenuItem value={"Applied"}>Applied</MenuItem>
-        <MenuItem value={"Shortlisted"}>Shortlisted</MenuItem>
-        <MenuItem value={"Rejected"}>Rejected</MenuItem>
-        <MenuItem value={"Accepted"}>Accepted</MenuItem>
-      </Select>
-    </div>
+        <Select
+          labelId="job-status"
+          id="job-status"
+          size="small"
+          value={currStatus}
+          // label="Status"
+          onChange={handleChange}
+          className="col-span-full md:col-span-1"
+        >
+          <MenuItem value={"Applied"}>Applied</MenuItem>
+          <MenuItem value={"Shortlisted"}>Shortlisted</MenuItem>
+          <MenuItem value={"Rejected"}>Rejected</MenuItem>
+          <MenuItem value={"Accepted"}>Accepted</MenuItem>
+        </Select>
+      </div>
+    </>
   );
 };
+
+const InfoItem = ({ icon: Icon, title, value }) => (
+  <div className="flex items-start space-x-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+    <div className="p-2 bg-primary/10 rounded-lg">
+      <Icon className="w-5 h-5 text-primary" />
+    </div>
+    <div>
+      <h2 className="text-sm font-semibold text-gray-700">{title}</h2>
+      <p className="text-gray-600 mt-1">{value}</p>
+    </div>
+  </div>
+);
 
 export default EmployerJobDetails;

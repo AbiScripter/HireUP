@@ -42,21 +42,23 @@ const EmployerLogin = () => {
   }
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid lg:grid-cols-2">
+      <AuthRightHalf authSvg={searchPeopleSvg} type={"employer"} />
+
       <main className="bg-gray-300 h-screen">
         <div className="flex justify-center pt-4">
           <Link to="/">
             <AppLogo />
           </Link>
         </div>
-        <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end">
+        <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end px-1 text-center">
           <p>Welcome back!</p>
           <p>Find the talent you need.</p>
         </h1>
         <div className="flex flex-col justify-center items-center mt-14">
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
+            className="bg-white p-5 xs:p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
           >
             <div className="mb-6">
               <TextField
@@ -91,7 +93,6 @@ const EmployerLogin = () => {
           </form>
         </div>
       </main>
-      <AuthRightHalf authSvg={searchPeopleSvg} type={"employer"} />
     </div>
   );
 };

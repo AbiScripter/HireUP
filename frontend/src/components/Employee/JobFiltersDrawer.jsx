@@ -54,11 +54,11 @@ const JobFiltersDrawer = () => {
 
         <Drawer open={open} onClose={toggleDrawer(false)}>
           <div className="p-4 flex flex-col gap-4">
-            <div className="flex justify-between items-center gap-4">
+            <div className="flex flex-col items-center gap-4">
               <h1 className="text-xl font-bold">Filters</h1>
               <button
                 onClick={handleReset}
-                className="text-red-500 font-semibold cursor-pointer px-4 py-1 bg-red-100 text-center"
+                className="text-red-500 text-sm font-semibold cursor-pointer px-4 py-1 bg-red-100 text-center"
               >
                 Reset Search & Filters
               </button>

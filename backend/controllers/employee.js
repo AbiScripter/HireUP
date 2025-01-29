@@ -48,8 +48,9 @@ const loginEmployee = async (req, res) => {
         fullname: employee.username, // Default fullname from username
         email: employee.email, // Email from employee record
         mobile: "", // Default empty fields
-        yearsOfExperience: 0,
-        location: "",
+        experience: "",
+        education: "",
+        currentPosition: "",
         topSkills: [],
         resumeUrl: "",
         employee_id: employee._id, // Associate with the employee

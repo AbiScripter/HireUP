@@ -7,12 +7,21 @@ import {
   getJobDetailsThunk,
   jobApplyThunk,
 } from "../../redux/reducers/employee/jobDetails";
+import {
+  MapPin,
+  Globe2,
+  Briefcase,
+  Users,
+  IndianRupee,
+  GraduationCap,
+  ScrollText,
+} from "lucide-react";
 
 const statusColors = {
-  Applied: "#7ec8e3", // Lighter Blue
-  Shortlisted: "#ffd56b", // Lighter Yellow
-  Rejected: "#f85a5a", // Lighter Red
-  Accepted: "#81c784", // Lighter Green
+  Shortlisted: "bg-yellow-500",
+  Accepted: "bg-green-500",
+  Rejected: "bg-red-500",
+  Applied: "bg-blue-500",
 };
 
 const JobDetails = () => {
@@ -75,86 +84,104 @@ const JobDetails = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto my-10 bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
-      {/* Header with Job Title and Status */}
-      <div className="bg-gray-800 text-white p-6 rounded-t-xl">
-        <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
-        <p className="mt-2 text-lg capitalize">{job?.company_name}</p>
-        <span
-          style={{ backgroundColor: statusColors[applicationStatus] }}
-          className={`mt-4 inline-block px-4 py-2 text-sm font-semibold rounded-md capitalize`}
-        >
-          {applicationStatus}
-        </span>
-      </div>
+    <div className="max-w-4xl mx-auto my-10">
+      {/* Header Card */}
+      <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-primary via-primary/90 to-primary text-white p-8">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              {/* <Building2 className="w-8 h-8" /> */}
+              <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
+            </div>
+            <p className="text-xl opacity-90 capitalize">{job?.company_name}</p>
+            <span
+              className={`${statusColors[applicationStatus]} px-4 py-2 rounded-full text-sm font-medium inline-flex items-center space-x-1`}
+            >
+              {/* <Clock className="w-4 h-4" /> */}
+              <span>{applicationStatus}</span>
+            </span>
+          </div>
+        </div>
 
-      {/* Job Details Section */}
-      <div className="p-8 space-y-6">
-        {/* Job Info Grid */}
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700">Location</h2>
-            <p className="text-gray-600">{job?.location}</p>
+        {/* Main Content */}
+        <div className="p-6 space-y-8">
+          {/* Info Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <InfoItem icon={MapPin} title="Location" value={job?.location} />
+            <InfoItem
+              icon={Briefcase}
+              title="Employment Type"
+              value={job?.employment_type}
+            />
+            <InfoItem icon={Globe2} title="Work Mode" value={job?.work_mode} />
+            <InfoItem
+              icon={IndianRupee}
+              title="Salary"
+              value={`₹${job?.salary?.toLocaleString("en-IN")}`}
+            />
+            <InfoItem
+              icon={GraduationCap}
+              title="Experience Required"
+              value={`${job?.years_of_experience} years`}
+            />
+            <InfoItem
+              icon={Users}
+              title="Open Positions"
+              value={job?.no_of_positions}
+            />
           </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700">
-              Employment Type
-            </h2>
-            <p className="text-gray-600">{job?.employment_type}</p>
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700">Work Mode</h2>
-            <p className="text-gray-600">{job?.work_mode}</p>
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700">Salary</h2>
-            <p className="text-gray-600">
-              ₹{job?.salary.toLocaleString("en-IN")}
+
+          {/* Job Description */}
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="flex items-center space-x-2 mb-4">
+              <ScrollText className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-semibold text-gray-700">
+                Job Description
+              </h2>
+            </div>
+            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+              {job?.description ||
+                "No detailed description has been provided for this role."}
             </p>
           </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700">
-              Experience Required
-            </h2>
-            <p className="text-gray-600">{job?.years_of_experience} years</p>
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-700">
-              Open Positions
-            </h2>
-            <p className="text-gray-600">{job?.no_of_positions}</p>
-          </div>
         </div>
 
-        {/* Job Description */}
-        <div className="min-h-64">
-          <h2 className="text-xl font-semibold text-gray-700">
-            Job Description
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            {job?.description
-              ? job?.description
-              : "No detailed description has been provided for this role."}
-          </p>
+        {/* Apply Section */}
+        <div className="p-6 bg-gray-50 border-t border-gray-200">
+          <button
+            onClick={handleApply}
+            disabled={isAlreadyApplied}
+            className={`
+              w-full py-4 px-6 rounded-xl text-lg font-semibold
+              flex items-center justify-center space-x-2
+              transition-all duration-200
+              ${
+                isAlreadyApplied
+                  ? "bg-gray-300 cursor-not-allowed text-gray-600"
+                  : "bg-primary text-white hover:bg-primary/90 shadow-lg hover:shadow-xl"
+              }
+            `}
+          >
+            <Briefcase className="w-5 h-5" />
+            <span>{isAlreadyApplied ? applicationStatus : "Apply Now"}</span>
+          </button>
         </div>
-      </div>
-
-      {/* Call-to-Action Section */}
-      <div className="bg-gray-100 p-6 border-t border-gray-300">
-        <button
-          onClick={handleApply}
-          className={`w-full py-3 text-lg font-semibold rounded-lg transition ${
-            isAlreadyApplied
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-primary text-white hover:bg-primaryhover"
-          }`}
-          disabled={isAlreadyApplied}
-        >
-          {isAlreadyApplied ? applicationStatus : "Apply Now"}
-        </button>
       </div>
     </div>
   );
 };
+
+const InfoItem = ({ icon: Icon, title, value }) => (
+  <div className="flex items-start space-x-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+    <div className="p-2 bg-primary/10 rounded-lg">
+      <Icon className="w-5 h-5 text-primary" />
+    </div>
+    <div>
+      <h2 className="text-sm font-semibold text-gray-700">{title}</h2>
+      <p className="text-gray-600 mt-1">{value}</p>
+    </div>
+  </div>
+);
 
 export default JobDetails;

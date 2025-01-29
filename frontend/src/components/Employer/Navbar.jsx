@@ -4,7 +4,7 @@ import AccountMenu from "./AccoutnMenu";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center border-b py-2">
+    <div className="flex justify-between items-center border-b py-1 px-4">
       <Link to="/employer/dashboard">
         <h1 className="text-3xl flex font-semibold">
           <span>Hire</span>

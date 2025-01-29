@@ -10,8 +10,9 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
     fullname: initialData?.fullname || "",
     email: initialData?.email || "",
     mobile: initialData?.mobile || "",
-    yearsOfExperience: initialData?.yearsOfExperience || "",
-    location: initialData?.location || "",
+    experience: initialData?.experience || "",
+    currentPosition: initialData?.currentPosition || "",
+    education: initialData?.education || "",
     topSkills: initialData?.topSkills.join(", ") || "",
     resumeUrl: initialData?.resumeUrl || "",
     resume: null, // For file upload
@@ -75,9 +76,9 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
         <TextField
           fullWidth
           label="Years of Experience"
-          name="yearsOfExperience"
+          name="experience"
           type="number"
-          value={formData.yearsOfExperience}
+          value={formData.experience}
           onChange={handleChange}
           variant="outlined"
           className="mb-2"
@@ -85,9 +86,19 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
 
         <TextField
           fullWidth
-          label="Location"
-          name="location"
-          value={formData.location}
+          label="Current Position"
+          name="currentPosition"
+          value={formData.currentPosition}
+          onChange={handleChange}
+          variant="outlined"
+          className="mb-2"
+        />
+
+        <TextField
+          fullWidth
+          label="Education"
+          name="education"
+          value={formData.education}
           onChange={handleChange}
           variant="outlined"
           className="mb-2"

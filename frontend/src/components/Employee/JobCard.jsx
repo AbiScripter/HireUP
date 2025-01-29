@@ -9,7 +9,8 @@ const JobCard = ({ job }) => {
   const { favouriteJobs } = useSelector((state) => state.jobFavourite);
   const isFavourite = favouriteJobs?.includes(job._id);
 
-  function handleFavourites() {
+  function handleFavourites(event) {
+    event.stopPropagation(); // Prevents the event from reaching the parent so that detailClik wont get invoked
     dispatch(toggleFavouritesThunk(job._id));
   }
 
@@ -23,7 +24,7 @@ const JobCard = ({ job }) => {
       onClick={handleDetailsClick}
     >
       <div className="rounded-md p-3 flex flex-col gap-4 relative">
-        <div className=" absolute right-[2px] top-[2px] rounded-full cursor-pointer">
+        <div className=" absolute right-[2px] top-[2px] rounded-full cursor-pointer heart">
           <Heart
             size={20}
             onClick={handleFavourites}

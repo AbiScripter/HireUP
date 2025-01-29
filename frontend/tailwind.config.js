@@ -8,7 +8,8 @@ module.exports = {
         primaryhover: "#731bc3",
       },
       screens: {
-        xs: "340px",
+        xxs: "330px",
+        xs: "450px",
       },
     },
   },

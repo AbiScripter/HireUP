@@ -31,7 +31,9 @@ const AccountMenu = () => {
   // !Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    localStorage.removeItem("employee_id");
+    window.location.href = "/";
+    // navigate("/");
   };
 
   const handleClick = (event) => {
