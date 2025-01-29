@@ -8,6 +8,7 @@ import AppLogo from "../../components/AppLogo";
 import PasswordEye from "../../components/PasswordEye";
 import searchPeopleSvg from "../../assets/svgs/undraw_people-search_xpq4.svg";
 import AuthRightHalf from "../../components/AuthRightHalf";
+import MobileAppLogo from "../../components/MobileAppLogo";
 
 const EmployerLogin = () => {
   const dispatch = useDispatch();
@@ -45,20 +46,26 @@ const EmployerLogin = () => {
     <div className="grid lg:grid-cols-2">
       <AuthRightHalf authSvg={searchPeopleSvg} type={"employer"} />
 
-      <main className="bg-gray-300 h-screen">
+      <main className="h-screen mobile-bg">
         <div className="flex justify-center pt-4">
           <Link to="/">
-            <AppLogo />
+            <div className="hidden lg:block">
+              <MobileAppLogo color={"black"} logoColor={"#902bf5"} />
+            </div>
+
+            <div className="block lg:hidden">
+              <MobileAppLogo color={"white"} />
+            </div>
           </Link>
         </div>
-        <h1 className="text-5xl flex flex-col items-center h-[300px] justify-end px-1 text-center">
+        <h1 className="text-4xl sm:text-5xl flex flex-col items-center h-[300px] justify-end px-1 text-center text-white lg:text-black">
           <p>Welcome back!</p>
           <p>Find the talent you need.</p>
         </h1>
-        <div className="flex flex-col justify-center items-center mt-14">
+        <div className="flex flex-col justify-center items-center mt-32 px-4">
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-5 xs:p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
+            className="bg-white p-5 pt-8 xs:p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200"
           >
             <div className="mb-6">
               <TextField

@@ -18,7 +18,8 @@ const CompanySwiper = () => {
   return (
     <Swiper
       // spaceBetween={10}
-      slidesPerView={5}
+      style={{ alignItems: "center" }}
+      slidesPerView={2}
       loop={true}
       autoplay={{
         delay: 2000,
@@ -26,55 +27,86 @@ const CompanySwiper = () => {
       }}
       speed={1000}
       modules={[Autoplay, Pagination, Navigation]}
+      breakpoints={{
+        540: {
+          slidesPerView: 3,
+        },
+        768: {
+          slidesPerView: 4,
+        },
+        1024: {
+          slidesPerView: 5,
+        },
+      }}
     >
       <SwiperSlide>
-        <div className="flex justify-center items-center">
-          <img src={amazon} alt="amazon" className="w-32 h-12" />
+        <div className="flex justify-center items-center mt-1">
+          <img
+            src={amazon}
+            alt="amazon"
+            className="h-12 w-24 xs:w-28 sm:w-32"
+          />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={amd} alt="amd" className="w-32 h-12" />
+          <img src={amd} alt="amd" className="h-12 w-24 xs:w-28 sm:w-32" />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={apple} alt="apple" className="w-32 h-12" />
+          <img src={apple} alt="apple" className="h-12 w-24 xs:w-28 sm:w-32" />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={flipkart} alt="flipkart" className="w-32 h-12" />
+          <img
+            src={flipkart}
+            alt="flipkart"
+            className="h-12 w-24 xs:w-28 sm:w-32"
+          />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={ibm} alt="ibm" className="w-32 h-12" />
+          <img src={ibm} alt="ibm" className="h-12 w-24 xs:w-28 sm:w-32" />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={meta} alt="meta" className="w-32 h-12" />
+          <img src={meta} alt="meta" className="h-12 w-24 xs:w-28 sm:w-32" />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={microsoft} alt="microsoft" className="w-32 h-12" />
+          <img
+            src={microsoft}
+            alt="microsoft"
+            className="h-12 w-24 xs:w-28 sm:w-32"
+          />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={nvidia} alt="nvidia" className="w-32 h-12" />
+          <img
+            src={nvidia}
+            alt="nvidia"
+            className="h-12 w-24 xs:w-28 sm:w-32"
+          />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={qualcomm} alt="qualcomm" className="w-32 h-12" />
+          <img
+            src={qualcomm}
+            alt="qualcomm"
+            className="h-12 w-24 xs:w-28 sm:w-32"
+          />
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex justify-center items-center">
-          <img src={uber} alt="uber" className="w-32 h-12" />
+          <img src={uber} alt="uber" className="h-12 w-24 xs:w-28 sm:w-32" />
         </div>
       </SwiperSlide>
     </Swiper>

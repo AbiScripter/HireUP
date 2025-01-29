@@ -4,7 +4,7 @@ import userOne from "../assets/users/user1.png";
 import userTwo from "../assets/users/user2.png";
 import "./style.css";
 
-const AuthRightHalf = ({ authSvg, type }) => {
+const AuthRightHalf = ({ type }) => {
   const testimonials = [
     {
       text: "HireUp helped me find the perfect candidates within days. It’s so easy to use!",
