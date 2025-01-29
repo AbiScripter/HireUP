@@ -117,26 +117,32 @@ const AccountMenu = () => {
 
         <Divider />
 
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <UserRound size={20} />
-          </ListItemIcon>
-          <Link to="/employee/profile">Profile</Link>
-        </MenuItem>
+        <Link to="/employee/profile">
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <UserRound size={20} />
+            </ListItemIcon>
+            Profile
+          </MenuItem>
+        </Link>
 
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <BriefcaseBusiness size={20} />
-          </ListItemIcon>
-          <Link to="/employee/applied">My Jobs</Link>
-        </MenuItem>
+        <Link to="/employee/applied">
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <BriefcaseBusiness size={20} />
+            </ListItemIcon>
+            My Jobs
+          </MenuItem>
+        </Link>
 
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Heart size={20} />
-          </ListItemIcon>
-          <Link to="/employee/favourites">Saved Jobs</Link>
-        </MenuItem>
+        <Link to="/employee/favourites">
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Heart size={20} />
+            </ListItemIcon>
+            Saved Jobs
+          </MenuItem>
+        </Link>
 
         <MenuItem onClick={handleLogout} style={{ color: "red" }}>
           <ListItemIcon>
