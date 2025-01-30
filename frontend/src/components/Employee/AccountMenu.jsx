@@ -11,24 +11,24 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { LogOut, Heart, BriefcaseBusiness, UserRound } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getEmployeeBasicDetailsThunk } from "../../redux/reducers/employee/employeeNavbar";
 
 const AccountMenu = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
-
   const { employeeData } = useSelector((state) => state.employeeNavbar);
 
+  // fetch basic employee details like username and email
   useEffect(() => {
     if (!employeeData) {
       dispatch(getEmployeeBasicDetailsThunk());
     }
   }, [dispatch, employeeData]);
 
-  // !Logout
+  //Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("employee_id");
@@ -36,6 +36,7 @@ const AccountMenu = () => {
     // navigate("/");
   };
 
+  // Menu event listeners
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -103,6 +104,7 @@ const AccountMenu = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        {/* List items in account menu username,profile etc */}
         <MenuItem>
           <Avatar />
           <div className="flex-grow">

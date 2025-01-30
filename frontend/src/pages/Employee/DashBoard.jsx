@@ -23,18 +23,19 @@ const EmployeeDashBoard = () => {
     filters,
   } = useSelector((state) => state.employee);
   const searchRef = useRef();
-  const cityRef = useRef();
+  // const cityRef = useRef();
 
-  // Fetch jobs for the current page
+  //Fetch jobs for the current page
   useEffect(() => {
     dispatch(fetchPaginatedJobs({ page: currentPage, filters }));
   }, [dispatch]);
 
-  //!Fetch Fav Job Ids
+  //Fetch Fav Job Ids
   useEffect(() => {
     dispatch(fetchFavouritesThunk());
   }, [dispatch]);
 
+  //handle job search
   const handleSearch = () => {
     const updatedFilters = { ...filters };
     updatedFilters["search_term"] = searchRef.current.value;
@@ -42,13 +43,12 @@ const EmployeeDashBoard = () => {
     dispatch(fetchPaginatedJobs({ page: 1, filters: updatedFilters }));
   };
 
+  // handle pagination
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       dispatch(fetchPaginatedJobs({ page, filters }));
     }
   };
-
-  console.log("jobsssssss", Object.keys(filters).length);
 
   if (jobsLoading) {
     return <Loader />;
@@ -56,19 +56,22 @@ const EmployeeDashBoard = () => {
 
   return (
     <div className="grid lg:w-5/6 grid-cols-4 xl:grid-cols-6 xl:w-4/5 2xl:w-3/5 mx-auto">
+      {/* Filters for devices more than 768px */}
       <div className="hidden md:flex col-span-1 xl:col-span-2 border bg-gray-200  justify-center">
         <JobFilters />
       </div>
 
+      {/* Filters for deviced less than 768px */}
       <div className="md:hidden">
         <JobFiltersDrawer />
       </div>
 
+      {/* main content */}
       <main className="col-span-4 md:col-span-3 xl:col-span-4 p-4">
+        {/* Job Search Field */}
         <div className="relative w-full ">
           <TextField
             id="Search"
-            // label="Search Jobs"
             variant="outlined"
             placeholder="Search Jobs by title & company"
             inputRef={searchRef}
@@ -87,6 +90,8 @@ const EmployeeDashBoard = () => {
             }}
           />
         </div>
+
+        {/* Jobs Section */}
         <div className="">
           {jobs.length === 0 ? (
             <div>
@@ -96,7 +101,6 @@ const EmployeeDashBoard = () => {
             </div>
           ) : (
             <>
-              {/* Jobs Section */}
               <div className="flex gap-4 flex-wrap py-6">
                 {jobs.map((job, i) => (
                   <JobCard job={job} key={job._id} />

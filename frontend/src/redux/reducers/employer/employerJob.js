@@ -58,7 +58,6 @@ export const deleteJobThunk = createAsyncThunk(
     console.log("data inside delete redux", job_id);
     try {
       const data = { job_id: job_id };
-      console.log(data);
       const response = await deleteJob(data);
       return response.data;
     } catch (error) {
@@ -73,7 +72,6 @@ export const getJobDetailsThunk = createAsyncThunk(
   "employer/get-jobs",
   async (job_id, { rejectWithValue }) => {
     try {
-      console.log("job Details reduxxxx", job_id);
       const data = { job_id: job_id };
       const response = await getEmployerJobDetails(data);
       return response.data;
@@ -148,6 +146,7 @@ const employerSlice = createSlice({
         toast.error(state.error);
       })
 
+      //get jobs
       .addCase(getPostedJobsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -162,6 +161,7 @@ const employerSlice = createSlice({
         toast.error(state.error);
       })
 
+      //post a job
       .addCase(postJobThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -177,6 +177,7 @@ const employerSlice = createSlice({
         toast.error(state.error);
       })
 
+      //delete job
       .addCase(deleteJobThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -194,6 +195,7 @@ const employerSlice = createSlice({
         toast.error(state.error);
       })
 
+      //get job details
       .addCase(getJobDetailsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -208,6 +210,7 @@ const employerSlice = createSlice({
         toast.error(state.error);
       })
 
+      //get job applicants
       .addCase(getJobApplicantsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -222,6 +225,7 @@ const employerSlice = createSlice({
         toast.error(state.error);
       })
 
+      //update application status
       .addCase(updateApplicationStatusThunk.pending, (state) => {
         state.loading = true;
         state.error = null;

@@ -59,7 +59,7 @@ const loginEmployer = async (req, res) => {
 // user data like email,username etc
 const getEmployerBasicDetails = async (req, res) => {
   try {
-    const employerId = req.employer.employerId; // Get the user ID from the decoded token
+    const employerId = req.employer.employerId; // Get the employerId from the decoded token
     console.log(employerId);
     const employerData = await Employer.findOne({ _id: employerId });
 
@@ -118,7 +118,7 @@ const postJob = async (req, res) => {
 // get posted jobs
 const getPostedJobs = async (req, res) => {
   try {
-    const employerId = req.employer.employerId; // Get the user ID from the decoded token
+    const employerId = req.employer.employerId; // Get the employerID from the decoded token
 
     // Fetch only jobs with `job_status: "Active"`
     const jobs = await Job.find({
@@ -203,7 +203,7 @@ const updateApplicationStatus = async (req, res) => {
   }
 };
 
-//not deleting the job just changing the job_status because if we delete the job entirely all the dbs which are having this job data will be in issue
+//not deleting the job just changing the job_status because if we delete the job data entirely all the databases which have this job data results error
 const deleteJob = async (req, res) => {
   try {
     const { job_id } = req.body.params; // Extract job_id from request body
@@ -225,7 +225,6 @@ const deleteJob = async (req, res) => {
       { job_status: "Inactive" } // Update their job_status to Inactive
     );
 
-    console.log("yud", updatedJob);
     res.status(200).json({
       msg: "Job and associated applications updated successfully",
       job: updatedJob,

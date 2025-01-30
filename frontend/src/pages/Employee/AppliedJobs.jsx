@@ -3,25 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAppliedJobsDetailsThunk } from "../../redux/reducers/employee/jobDetails";
 
 const statusColors = {
-  Applied: "#7ec8e3", // Lighter Blue
-  Shortlisted: "#ffd56b", // Lighter Yellow
-  Rejected: "#f85a5a", // Lighter Red
-  Accepted: "#81c784", // Lighter Green
+  Applied: "#7ec8e3",
+  Shortlisted: "#ffd56b",
+  Rejected: "#f85a5a",
+  Accepted: "#81c784",
 };
 
 const AppliedJobs = () => {
   const dispatch = useDispatch();
   const employee_id = localStorage.getItem("employee_id");
-  const { appliedJobsDetails, loading, error } = useSelector(
+  const { appliedJobsDetails, loading } = useSelector(
     (state) => state.jobDetails
   );
 
-  console.log("applied details", appliedJobsDetails);
-
+  //fetch applied job details
   useEffect(() => {
     dispatch(fetchAppliedJobsDetailsThunk(employee_id));
   }, [dispatch]);
 
+  //function to format the date
   function formatDate(date) {
     const newDate = new Date(date);
     return String(newDate).slice(4, 15);
@@ -38,6 +38,7 @@ const AppliedJobs = () => {
         </h1>
       ) : (
         <div className="py-8">
+          {/* Applied Jobs */}
           {appliedJobsDetails.map((job, i) => (
             <div
               key={job._id}
@@ -48,6 +49,7 @@ const AppliedJobs = () => {
                 at<h2>{job.company_name}</h2>
               </div>
 
+              {/* job status */}
               <div className="flex items-center justify-between">
                 <p>{formatDate(job.applied_at)}</p>
                 <p className="font-semibold">

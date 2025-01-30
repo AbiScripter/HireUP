@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { lazy } from "react";
-import "./App.css";
 
 // !Lazy Loading
 const Home = lazy(() => import("./pages/Home"));
+
 // Employee
 const EmployeeLayout = lazy(() => import("./Layout/EmployeeLayout"));
 const EmployeeLogin = lazy(() => import("./pages/Employee/Login"));
@@ -14,6 +14,7 @@ const EmployeeJobDetails = lazy(() => import("./pages/Employee/JobDetails"));
 const EmployeeProfile = lazy(() => import("./pages/Employee/Profile"));
 const FavouriteJobs = lazy(() => import("./pages/Employee/FavouriteJobs"));
 const AppliedJobs = lazy(() => import("./pages/Employee/AppliedJobs"));
+
 // Employer
 const EmployerLayout = lazy(() => import("./Layout/EmployerLayout"));
 const EmployerSignup = lazy(() => import("./pages/Employer/Signup"));

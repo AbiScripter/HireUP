@@ -21,18 +21,20 @@ const AccountMenu = () => {
   const { basicDetails } = useSelector((state) => state.employerJob);
   const open = Boolean(anchorEl);
 
+  // fetch basic employer details like email and username
   useEffect(() => {
     if (!basicDetails) {
       dispatch(getEmployerBasicDetailsThunk());
     }
   }, [dispatch, basicDetails]);
 
-  // !Logout
+  //Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
 
+  // Menu event listeners
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

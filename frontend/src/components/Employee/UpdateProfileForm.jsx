@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { editProfileThunk } from "../../redux/reducers/employee/employeeProfile";
 
 const UpdateProfileForm = ({ initialData, handleClose }) => {
-  console.log("INITIAL DATA", initialData);
   const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     fullname: initialData?.fullname || "",
     email: initialData?.email || "",
@@ -114,6 +114,7 @@ const UpdateProfileForm = ({ initialData, handleClose }) => {
           className="mb-2"
         />
 
+        {/* resume section */}
         <div className="flex items-center gap-2">
           <p className="font-medium text-lg text-gray-700">Resume : </p>
           {initialData?.resumeUrl ? (

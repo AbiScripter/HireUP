@@ -11,10 +11,12 @@ const JobFiltersDrawer = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.employee.filters);
   const [open, setOpen] = useState(false);
+
   // Handle checkbox changes
   const handleCheckboxChange = (filterCategory, value) => {
     const updatedFilters = { ...filters };
     const currentValues = updatedFilters[filterCategory] || [];
+
     if (currentValues.includes(value)) {
       updatedFilters[filterCategory] = currentValues.filter(
         (item) => item !== value
@@ -22,11 +24,15 @@ const JobFiltersDrawer = () => {
     } else {
       updatedFilters[filterCategory] = [...currentValues, value];
     }
+
+    // update in redux
     dispatch(setFilters(updatedFilters));
+
     //have to reset the page to 1 , if the filter changes
     dispatch(fetchPaginatedJobs({ page: 1, filters: updatedFilters }));
   };
 
+  // handle reset filter
   const handleReset = () => {
     dispatch(
       setFilters({
@@ -39,12 +45,14 @@ const JobFiltersDrawer = () => {
     dispatch(fetchPaginatedJobs({ page: 1, filters: filters }));
   };
 
+  // for MUI drawer
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
   return (
     <div>
+      {/*//! Job Filter inside MUI Drawer for smaller screens */}
       <div className="md:hidden">
         <Menu
           onClick={toggleDrawer(true)}
@@ -53,6 +61,7 @@ const JobFiltersDrawer = () => {
         />
 
         <Drawer open={open} onClose={toggleDrawer(false)}>
+          {/*Heading & Reset Filter btn */}
           <div className="p-4 flex flex-col gap-4">
             <div className="flex flex-col items-center gap-4">
               <h1 className="text-xl font-bold">Filters</h1>
@@ -64,7 +73,6 @@ const JobFiltersDrawer = () => {
               </button>
             </div>
 
-            {/* Filters */}
             {/* Employment Type */}
             <Divider />
             <div>
@@ -113,7 +121,9 @@ const JobFiltersDrawer = () => {
                 ))}
               </div>
             </div>
+
             <Divider />
+
             {/* Work Mode */}
             <div>
               <h2 className="text-lg font-semibold">Work Mode</h2>

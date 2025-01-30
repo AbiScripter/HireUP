@@ -35,7 +35,6 @@ const JobDetails = () => {
   const employee_id = localStorage.getItem("employee_id");
   const isAlreadyApplied = applicationStatus === "" ? false : true;
 
-  console.log("job Details", job);
   //!fetch job details
   useEffect(() => {
     dispatch(getJobDetailsThunk(jobId));
@@ -66,6 +65,7 @@ const JobDetails = () => {
     return <Loader />;
   }
 
+  // If Job Deleted By the employer show this message
   if (job?.job_status === "Inactive") {
     return (
       <div className="max-w-xl mx-auto my-10 text-center">
@@ -87,18 +87,15 @@ const JobDetails = () => {
     <div className="max-w-4xl mx-auto my-10">
       {/* Header Card */}
       <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
-        {/* Hero Section */}
         <div className="bg-gradient-to-r from-primary via-primary/90 to-primary text-white p-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              {/* <Building2 className="w-8 h-8" /> */}
               <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
             </div>
             <p className="text-xl opacity-90 capitalize">{job?.company_name}</p>
             <span
               className={`${statusColors[applicationStatus]} px-4 py-2 rounded-full text-sm font-medium inline-flex items-center space-x-1`}
             >
-              {/* <Clock className="w-4 h-4" /> */}
               <span>{applicationStatus}</span>
             </span>
           </div>

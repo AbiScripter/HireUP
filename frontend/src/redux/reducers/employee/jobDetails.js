@@ -8,14 +8,13 @@ import {
   getJobDetails,
 } from "../../../services/api";
 
+//Job Details
 export const getJobDetailsThunk = createAsyncThunk(
   "employee/get-jobDetails",
   async (job_id, { rejectWithValue }) => {
     try {
       const data = { job_id: job_id };
-      console.log(data);
       const response = await getJobDetails(data);
-
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -25,12 +24,12 @@ export const getJobDetailsThunk = createAsyncThunk(
   }
 );
 
+//Applied Jobs
 export const getAppliedJobsThunk = createAsyncThunk(
   "employee/get-applied",
   async (_, { rejectWithValue }) => {
     try {
       const response = await getAppliedJobs();
-
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -40,17 +39,14 @@ export const getAppliedJobsThunk = createAsyncThunk(
   }
 );
 
+// Application status
 export const getApplicationStatusThunk = createAsyncThunk(
   "employee/get-application-status",
   async (data, { rejectWithValue }) => {
     try {
-      console.log("Status thunk Data", data);
-      // const data = { job_id: job_id };
       const response = await getApplicationStatus(data);
-      console.log("response Status Redux :", response);
       return response.data;
     } catch (error) {
-      console.log("status redux errror", error);
       return rejectWithValue(
         error.response?.data?.msg || "An error occurred. Please try again."
       );
@@ -58,21 +54,13 @@ export const getApplicationStatusThunk = createAsyncThunk(
   }
 );
 
+//Apply for a job
 export const jobApplyThunk = createAsyncThunk(
   "profile/postApplication",
   async (passedData, { rejectWithValue }) => {
     try {
-      // Prepare the data to send
-      // const data = {
-      //   ...formData,
-      //   // topSkills: topSkills,
-      //   // resumeUrl: resumeUrl,
-      // };
-
       const data = passedData;
-      console.log("data for jobApply", data);
       const response = await applyToJob(data);
-
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -82,14 +70,13 @@ export const jobApplyThunk = createAsyncThunk(
   }
 );
 
+// Job Details
 export const fetchAppliedJobsDetailsThunk = createAsyncThunk(
   "employee/fetchAppliedJobDetails",
   async (employee_id, { rejectWithValue }) => {
     try {
-      console.log("data insdie fetchapplyredux", employee_id);
       const data = { employee_id: employee_id };
       const response = await getAppliedJobDetails(data);
-      console.log(response);
       return response.data; // Full job details array
     } catch (error) {
       return rejectWithValue(
@@ -114,7 +101,7 @@ const jobDetailsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // get job details
+      // Get job details
       .addCase(getJobDetailsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -179,7 +166,7 @@ const jobDetailsSlice = createSlice({
         toast.error(state.error);
       })
 
-      //applied job details - applied jobs page
+      //Applied job details - applied jobs page
       .addCase(fetchAppliedJobsDetailsThunk.pending, (state) => {
         state.loading = true;
       })

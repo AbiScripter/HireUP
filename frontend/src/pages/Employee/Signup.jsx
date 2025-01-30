@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { registerEmployeeThunk } from "../../redux/reducers/employee/employeeAuth";
 import PasswordEye from "../../components/PasswordEye";
-import loginSvg from "../../assets/svgs/undraw_login_wqkt.svg";
-import AuthRightHalf from "../../components/AuthRightHalf";
 import MobileAppLogo from "../../components/MobileAppLogo";
+import AuthTestimonials from "../../components/AuthTestimonials";
 
 const EmployeeSignup = () => {
   const dispatch = useDispatch();
@@ -32,7 +31,6 @@ const EmployeeSignup = () => {
         // setFormData({ username: "", email: "", password: "" });
       })
       .catch((error) => {
-        // Handle error (optional)
         console.error(error);
       });
   };
@@ -43,9 +41,12 @@ const EmployeeSignup = () => {
 
   return (
     <div className="grid lg:grid-cols-2">
-      <AuthRightHalf authSvg={loginSvg} type={"employee"} />
+      {/*Testimonals only on  screens above 1024px  */}
+      <AuthTestimonials type={"employee"} />
 
+      {/* Main content */}
       <main className="bg-gray-300 h-screen mobile-bg">
+        {/* Different color logos for different screen sizes */}
         <div className="flex justify-center pt-4">
           <Link to="/">
             <div className="hidden lg:block">
@@ -57,10 +58,14 @@ const EmployeeSignup = () => {
             </div>
           </Link>
         </div>
+
+        {/* Phrases */}
         <h1 className="text-4xl sm:text-5xl flex flex-col items-center h-[300px] justify-end px-1 text-center text-white lg:text-black">
           <p>Your dream job</p>
           <p>starts here.</p>
         </h1>
+
+        {/* form */}
         <div className="flex flex-col justify-center items-center mt-32 px-4">
           <form
             onSubmit={handleSubmit}

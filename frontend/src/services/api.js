@@ -34,7 +34,6 @@ export const updateEmployeeProfile = (data) =>
   API.put("/update-employee-profile", data);
 
 // jobs
-// export const getAllJobs = () => API.get("/jobs");
 export const getPaginatedJobs = (data) => API.get("/jobs", { params: data });
 export const applyToJob = (data) => API.post("/job-apply", data);
 export const getJobDetails = (data) =>
@@ -73,7 +72,7 @@ export const getEmployerJobDetails = (data) =>
   API.get("/employer-job-details", { params: data });
 export const postJob = (formData) => API.post("/post-job", formData);
 
-//not deleting the job just changing the job_status because if we delete the job entirely all the dbs which are having this job data will be in issue
+//not deleting the job just changing the job_status to Inactive because if we delete the job entirely all the dbs which are having this job data will be in issue
 export const deleteJob = (data) => API.put("/delete-job", { params: data });
 export const updateApplicationStatus = (data) =>
   API.put("/update-application-status", { params: data });

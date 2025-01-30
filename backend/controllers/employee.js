@@ -69,7 +69,7 @@ const loginEmployee = async (req, res) => {
     res.status(200).json({
       msg: "Employee logged in successfully",
       token: token,
-      profile: profile, // Send back the profile data for use in the frontend
+      profile: profile,
     });
   } catch (error) {
     console.error(error.message);
@@ -92,21 +92,6 @@ const getEmployeeBasicDetails = async (req, res) => {
       employeeData: employeeData,
     });
   } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
-// get all posted jobs
-const getAllJobs = async (req, res) => {
-  try {
-    const jobs = await Job.find();
-
-    res.status(200).json({
-      msg: "Jobs fetched Successfully",
-      jobs: jobs,
-    });
-  } catch (error) {
-    console.log(error.message);
     res.status(500).json({ msg: error.message });
   }
 };
@@ -136,7 +121,7 @@ const updateEmployeeProfile = async (req, res) => {
     const updatedProfile = await EmployeeProfile.findOneAndUpdate(
       { employee_id: employeeId },
       { ...req.body, employee_id: employeeId },
-      { new: true } // This ensures the updated document is returned
+      { new: true }
     );
 
     res.status(200).json({
@@ -156,7 +141,6 @@ const applyToJob = async (req, res) => {
       employee_id: employeeId,
     });
 
-    //receive job_status and add
     const { job_id, company_name, job_title } = req.body;
 
     const { fullname, resumeUrl } = profileData;
@@ -223,7 +207,6 @@ const getApplicationStatus = async (req, res) => {
       });
     }
 
-    // Return the status field
     res.json({ status: application.application_status });
   } catch (error) {
     console.error("Error fetching status:", error);
@@ -295,10 +278,10 @@ const getAppliedJobs = async (req, res) => {
   try {
     const employeeId = req.employee.employeeId;
 
-    // Using Mongoose projection to fetch only the favouriteJobs field
+    // Using Mongoose projection to fetch only the appliedjobs field
     const employeeProfile = await EmployeeProfile.findOne(
       { employee_id: employeeId },
-      "appliedJobs" // Projection: only fetch the favouriteJobs field
+      "appliedJobs" // Projection: only fetch the appliedJobs field
     );
 
     if (!employeeProfile) {
@@ -348,7 +331,7 @@ const getFavouriteJobDetails = async (req, res) => {
 
 const getAppliedJobDetails = async (req, res) => {
   try {
-    const { employee_id } = req.query; // Array of job IDs
+    const { employee_id } = req.query;
 
     const jobsData = await Application.find({ employee_id: employee_id }); // Fetch matching jobs
     res.status(200).json({
@@ -359,27 +342,6 @@ const getAppliedJobDetails = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch Applied Job Details" });
   }
 };
-
-// const getPaginatedJobs = async (req, res) => {
-//   try {
-//     const { page = 1 } = req.query; // Default to page 1
-//     const limit = 10;
-//     const skip = (Number(page) - 1) * limit;
-//     console.log("backend page", page);
-
-//     const totalJobs = await Job.countDocuments();
-//     const jobs = await Job.find().skip(skip).limit(limit); // Fetch jobs for the current page
-
-//     res.status(200).json({
-//       totalJobs,
-//       currentPage: Number(page),
-//       totalPages: Math.ceil(totalJobs / limit),
-//       jobs,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
 
 const getPaginatedJobs = async (req, res) => {
   try {
@@ -440,7 +402,6 @@ module.exports = {
   registerEmployee,
   loginEmployee,
   getEmployeeBasicDetails,
-  getAllJobs,
   getEmployeeProfile,
   updateEmployeeProfile,
   applyToJob,

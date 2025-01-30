@@ -10,7 +10,7 @@ const JobCard = ({ job }) => {
   const isFavourite = favouriteJobs?.includes(job._id);
 
   function handleFavourites(event) {
-    event.stopPropagation(); // Prevents the event from reaching the parent so that detailClik wont get invoked
+    event.stopPropagation(); // Prevents the event from reaching the parent so that detailClick wont get invoked
     dispatch(toggleFavouritesThunk(job._id));
   }
 
@@ -24,6 +24,7 @@ const JobCard = ({ job }) => {
       onClick={handleDetailsClick}
     >
       <div className="rounded-md p-3 flex flex-col gap-4 relative">
+        {/* Heart to toggle favourite */}
         <div className=" absolute right-[2px] top-[2px] rounded-full cursor-pointer heart">
           <Heart
             size={20}
@@ -37,8 +38,7 @@ const JobCard = ({ job }) => {
 
           <div className="flex flex-col lg:flex-row lg:justify-between gap-y-2">
             <div className="flex gap-2 md:gap-4 items-center flex-wrap">
-              <p className="text-sm">{job.company_name}</p>
-              {/* Addtional info */}
+              <h2 className="text-sm">{job.company_name}</h2>
 
               <div className="flex gap-1">
                 <p className="px-2 rounded-full text-sm border-2 bg-gray-300 ">

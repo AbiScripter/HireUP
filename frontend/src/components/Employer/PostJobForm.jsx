@@ -23,7 +23,6 @@ const PostJobForm = ({ handleClose }) => {
     no_of_positions: "",
     years_of_experience: "",
   });
-
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -44,6 +43,7 @@ const PostJobForm = ({ handleClose }) => {
       }
     });
 
+    // if there are no erros: post the job
     if (Object.keys(newErrors).length === 0) {
       dispatch(postJobThunk(formData));
       handleClose();

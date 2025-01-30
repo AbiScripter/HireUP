@@ -6,7 +6,7 @@ import {
   getJobDetailsThunk,
   updateApplicationStatusThunk,
 } from "../../redux/reducers/employer/employerJob";
-import { Box, Divider, LinearProgress, MenuItem, Select } from "@mui/material";
+import { Box, LinearProgress, MenuItem, Select } from "@mui/material";
 import {
   MapPin,
   Globe2,
@@ -47,11 +47,9 @@ const EmployerJobDetails = () => {
     <div className="max-w-4xl mx-auto my-10">
       <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-xl border border-gray-300 rounded-xl">
         {/* Header with Job Title and Status */}
-        {/* Hero Section */}
         <div className="bg-gradient-to-r from-primary via-primary/90 to-primary text-white p-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              {/* <Building2 className="w-8 h-8" /> */}
               <h1 className="text-3xl font-bold capitalize">{job?.title}</h1>
             </div>
             <p className="text-xl opacity-90 capitalize">{job?.company_name}</p>
@@ -122,6 +120,7 @@ const EmployerJobDetails = () => {
   );
 };
 
+// Applicants details card
 const DetailCard = ({ applicant }) => {
   const dispatch = useDispatch();
   const [currStatus, setCurrentStatus] = useState(

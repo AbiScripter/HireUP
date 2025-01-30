@@ -6,6 +6,7 @@ import {
   toggleFavouriteJob,
 } from "../../../services/api";
 
+//Favourite Jobs
 export const fetchFavouritesThunk = createAsyncThunk(
   "profile/fetch-favourites",
   async (_, { rejectWithValue }) => {
@@ -22,6 +23,7 @@ export const fetchFavouritesThunk = createAsyncThunk(
   }
 );
 
+// Toggle Favourites
 export const toggleFavouritesThunk = createAsyncThunk(
   "profile/toggle-favourite",
   async (job_id, { rejectWithValue }) => {
@@ -41,12 +43,12 @@ export const toggleFavouritesThunk = createAsyncThunk(
   }
 );
 
+// Fetch Favourite Job Details
 export const fetchFavouriteJobDetailsThunk = createAsyncThunk(
   "jobFavourite/fetchDetails",
   async (jobIds, { rejectWithValue }) => {
     try {
       if (!jobIds || jobIds.length === 0) {
-        // Return early if jobIds is empty or undefined
         return { jobsData: [] }; // Return an empty response to avoid backend call
       }
       const data = { jobIds: jobIds };
@@ -115,6 +117,7 @@ const jobFavouriteSlice = createSlice({
         toast.error(state.error);
       })
 
+      //Fetch Favourite Job Details
       .addCase(fetchFavouriteJobDetailsThunk.pending, (state) => {
         state.loading = true;
       })

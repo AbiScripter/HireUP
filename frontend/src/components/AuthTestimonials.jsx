@@ -4,7 +4,8 @@ import userOne from "../assets/users/user1.png";
 import userTwo from "../assets/users/user2.png";
 import "./style.css";
 
-const AuthRightHalf = ({ type }) => {
+const AuthTestimonials = ({ type }) => {
+  // Testimonal data
   const testimonials = [
     {
       text: "HireUp helped me find the perfect candidates within days. It’s so easy to use!",
@@ -45,12 +46,7 @@ const AuthRightHalf = ({ type }) => {
   console.log(filteredTestimonals);
   return (
     <div className="flex-col justify-center items-center p-6 h-screen bg-cover bg-center auth-right hidden lg:flex">
-      {/* SVG Section */}
-      {/* <div className="flex justify-center items-center mb-6">
-        <img src={authSvg} alt="svg" className="w-3/4 max-w-md" />
-      </div> */}
-
-      {/* Testimonial Section */}
+      {/* Testimonal cards */}
       <div className="space-y-4 w-full px-6">
         {testimonials.map((testimonial, index) => (
           <div
@@ -80,4 +76,4 @@ const AuthRightHalf = ({ type }) => {
   );
 };
 
-export default AuthRightHalf;
+export default AuthTestimonials;

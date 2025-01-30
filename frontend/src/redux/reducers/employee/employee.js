@@ -2,22 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { getPaginatedJobs } from "../../../services/api";
 
-// Fetch all jobs for the employees
-// export const fetchJobsThunk = createAsyncThunk(
-//   "jobs/fetchAll",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       // const response = await getAllJobs();
-//       if (response.data.jobs.length === 0) {
-//         return rejectWithValue("No jobs found.");
-//       }
-//       return response.data.jobs; // Return the list of jobs
-//     } catch (error) {
-//       return rejectWithValue(error.message || "Failed to fetch jobs.");
-//     }
-//   }
-// );
-
+//FetchJobs
 export const fetchPaginatedJobs = createAsyncThunk(
   "jobs/fetchPaginatedJobs",
   async ({ page, filters }, { rejectWithValue }) => {

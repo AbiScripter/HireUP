@@ -2,7 +2,6 @@ const express = require("express");
 const {
   registerEmployee,
   loginEmployee,
-  getAllJobs,
   toggleFavouriteJob,
   getEmployeeBasicDetails,
   getEmployeeProfile,
@@ -24,10 +23,10 @@ const router = express.Router();
 router.post("/register-employee", registerEmployee);
 router.post("/login-employee", loginEmployee);
 
-//!protected Route
+//!protected Routes
 router.get("/employee-basics", employeeAuthMiddleware, getEmployeeBasicDetails);
 
-// router.get("/jobs", employeeAuthMiddleware, getAllJobs);
+router.get("/jobs", employeeAuthMiddleware, getPaginatedJobs);
 router.post("/job-apply", employeeAuthMiddleware, applyToJob);
 router.get("/job-details", employeeAuthMiddleware, getJobDetails);
 router.get("/application-status", employeeAuthMiddleware, getApplicationStatus);
@@ -53,7 +52,5 @@ router.get(
   employeeAuthMiddleware,
   getAppliedJobDetails
 );
-
-router.get("/jobs", employeeAuthMiddleware, getPaginatedJobs);
 
 module.exports = router;

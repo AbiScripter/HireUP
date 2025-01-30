@@ -8,10 +8,12 @@ import { Divider } from "@mui/material";
 const JobFilters = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.employee.filters);
+
   // Handle checkbox changes
   const handleCheckboxChange = (filterCategory, value) => {
     const updatedFilters = { ...filters };
     const currentValues = updatedFilters[filterCategory] || [];
+
     if (currentValues.includes(value)) {
       updatedFilters[filterCategory] = currentValues.filter(
         (item) => item !== value
@@ -19,11 +21,15 @@ const JobFilters = () => {
     } else {
       updatedFilters[filterCategory] = [...currentValues, value];
     }
+
+    // update in redux
     dispatch(setFilters(updatedFilters));
+
     //have to reset the page to 1 , if the filter changes
     dispatch(fetchPaginatedJobs({ page: 1, filters: updatedFilters }));
   };
 
+  // handle reset filter
   const handleReset = () => {
     dispatch(
       setFilters({
@@ -33,12 +39,14 @@ const JobFilters = () => {
         search_term: "",
       })
     );
+
     // Reset all filters including search_term
     dispatch(fetchPaginatedJobs({ page: 1, filters: filters }));
   };
 
   return (
     <div className="flex flex-col gap-6 w-full p-4">
+      {/*Heading & Reset Filter btn */}
       <div className="flex justify-between items-center flex-col xl:flex-row gap-2">
         <h1 className="text-xl  font-bold">Filters</h1>
         <button
@@ -51,7 +59,6 @@ const JobFilters = () => {
 
       <Divider />
 
-      {/* Filters */}
       {/* Employment Type */}
       <div>
         <h2 className="text-lg font-semibold">Employment Type</h2>
@@ -97,6 +104,7 @@ const JobFilters = () => {
       </div>
 
       <Divider />
+
       {/* Work Mode */}
       <div>
         <h2 className="text-lg font-semibold">Work Mode</h2>

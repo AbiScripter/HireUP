@@ -17,7 +17,7 @@ const applicationSchema = new mongoose.Schema({
   company_name: {
     type: String,
   },
-  fullname: { type: String, required: true }, // Employee details
+  fullname: { type: String, required: true },
   resumeUrl: { type: String, required: true }, // Resume link
   topSkills: { type: [String], default: [] },
   applied_at: {

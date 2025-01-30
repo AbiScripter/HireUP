@@ -8,11 +8,11 @@ const employeeProfileSchema = new mongoose.Schema({
   currentPosition: { type: String, trim: true },
   education: { type: String, trim: true },
   topSkills: { type: [String], default: [] },
-  resumeUrl: { type: String, trim: true }, // supabase url
+  resumeUrl: { type: String, trim: true }, // supabase resume url
 
   employee_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Employee", // reference to  employer model
+    ref: "Employee", // reference to  employee model
     required: true,
     unique: true,
   },

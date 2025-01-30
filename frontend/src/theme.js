@@ -31,10 +31,10 @@ const customTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: "none", // Avoid uppercase
-          backgroundColor: "#6b46c1", // Default button color
+          textTransform: "none",
+          backgroundColor: "#6b46c1",
           "&:hover": {
-            backgroundColor: "#553c9a", // Darker on hover
+            backgroundColor: "#553c9a",
           },
         },
       },

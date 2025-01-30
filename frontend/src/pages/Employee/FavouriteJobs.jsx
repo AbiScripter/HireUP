@@ -5,27 +5,27 @@ import {
   fetchFavouritesThunk,
 } from "../../redux/reducers/employee/jobFavourite";
 import JobCard from "../../components/Employee/JobCard";
+import Loader from "../../components/Loader";
 
 const FavouriteJobs = () => {
   const dispatch = useDispatch();
-  const { favouriteJobs, favouriteJobDetails, loading, error } = useSelector(
+  const { favouriteJobs, favouriteJobDetails, loading } = useSelector(
     (state) => state.jobFavourite
   );
 
-  console.log("favjobs details", favouriteJobDetails);
-  console.log("favjobsids", favouriteJobs);
-
+  //fetch favourite job ids
   useEffect(() => {
     if (favouriteJobs.length === 0) {
       dispatch(fetchFavouritesThunk());
     }
   }, [dispatch]);
 
+  //fetch all favourite job's data
   useEffect(() => {
     dispatch(fetchFavouriteJobDetailsThunk(favouriteJobs));
   }, [dispatch, favouriteJobs.length]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader />;
 
   return (
     <main className="h-screen px-4 md:w-3/5 xl:w-2/5 mx-auto">

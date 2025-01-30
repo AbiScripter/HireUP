@@ -1,13 +1,12 @@
 import { useRef } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { registerEmployerThunk } from "../../redux/reducers/employer/employerAuth";
 import PasswordEye from "../../components/PasswordEye";
-import selectTeamSvg from "../../assets/svgs/undraw_selecting-team_zehd.svg";
-import AuthRightHalf from "../../components/AuthRightHalf";
 import MobileAppLogo from "../../components/MobileAppLogo";
+import AuthTestimonials from "../../components/AuthTestimonials";
 
 const EmployerSignup = () => {
   const dispatch = useDispatch();
@@ -43,9 +42,12 @@ const EmployerSignup = () => {
 
   return (
     <div className="grid lg:grid-cols-2">
-      <AuthRightHalf authSvg={selectTeamSvg} type={"employer"} />
+      {/*Testimonals only on  screens above 1024px  */}
+      <AuthTestimonials type={"employer"} />
 
+      {/* Main content */}
       <main className="h-screen mobile-bg">
+        {/* Different color logos for different screen sizes */}
         <div className="flex justify-center pt-4">
           <Link to="/">
             <div className="hidden lg:block">
@@ -57,9 +59,12 @@ const EmployerSignup = () => {
             </div>
           </Link>
         </div>
+        {/* Phrases */}
         <h1 className="text-4xl sm:text-5xl flex flex-col items-center h-[300px] justify-end px-1 text-center text-white lg:text-black">
           <p>Build your dream team with us.</p>
         </h1>
+
+        {/* form */}
         <div className="flex flex-col justify-center items-center mt-32 px-4">
           <form
             onSubmit={handleSubmit}

@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { loginEmployeeThunk } from "../../redux/reducers/employee/employeeAuth";
 import PasswordEye from "../../components/PasswordEye";
-import johHuntSvg from "../../assets/svgs/undraw_job-hunt_5umi.svg";
-import AuthRightHalf from "../../components/AuthRightHalf";
 import MobileAppLogo from "../../components/MobileAppLogo";
+import AuthTestimonials from "../../components/AuthTestimonials";
 
 const EmployeeLogin = () => {
   const emailRef = useRef();
@@ -40,9 +39,12 @@ const EmployeeLogin = () => {
 
   return (
     <div className="grid lg:grid-cols-2">
-      <AuthRightHalf authSvg={johHuntSvg} type={"employee"} />
+      {/*Testimonals only on  screens above 1024px  */}
+      <AuthTestimonials type={"employee"} />
 
+      {/* Main content */}
       <main className="bg-gray-300 h-screen mobile-bg">
+        {/* Different color logos for different screen sizes */}
         <div className="flex justify-center pt-4">
           <Link to="/">
             <div className="hidden lg:block">
@@ -54,6 +56,8 @@ const EmployeeLogin = () => {
             </div>
           </Link>
         </div>
+
+        {/* Phrases */}
         <h1 className="text-4xl sm:text-5xl flex flex-col items-center h-[300px] justify-end px-1 text-center text-white lg:text-black">
           <p>Welcome back!</p>
           <p>Let’s get you hired.</p>

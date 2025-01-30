@@ -39,6 +39,7 @@ const CompanySwiper = () => {
         },
       }}
     >
+      {/* Company logos */}
       <SwiperSlide>
         <div className="flex justify-center items-center mt-1">
           <img
