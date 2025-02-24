@@ -29,7 +29,6 @@ const EmployerDashboard = () => {
   const [postJobModalopen, setPostJobModalOpen] = useState(false);
   const [DeleteJobDialogopen, setDeleteJobDialogOpen] = useState(false);
   const [jobIdToDelete, setJobIdToDelete] = useState(null);
-
   const handlePostJobModalOpen = () => setPostJobModalOpen(true);
   const handlePostJobModalClose = () => setPostJobModalOpen(false);
   const dispatch = useDispatch();
@@ -43,6 +42,7 @@ const EmployerDashboard = () => {
 
   const handleDeleteJob = () => {
     dispatch(deleteJobThunk(jobIdToDelete));
+    handleDeleteJobDialogClose();
   };
 
   const handleDeleteJobDialogOpen = (job_id) => {
